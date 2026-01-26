@@ -249,7 +249,176 @@
         .pyodide-text { font-family: var(--font-mono); font-size: 14px; color: var(--text-secondary); margin-bottom: 24px; }
         .pyodide-progress { width: 200px; height: 4px; background: var(--bg-tertiary); border-radius: 2px; overflow: hidden; }
         .pyodide-progress-bar { height: 100%; background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple)); width: 0%; transition: width 0.3s ease; }
-        @media (max-width: 768px) { .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; } .sidebar.open { transform: translateX(0); } .main-content { margin-left: 0; } .content-area { padding: 16px; } .top-bar { padding: 12px 16px; } .search-container { display: none; } .mobile-menu-btn { display: flex; } .toc-list { columns: 1; } }
+        /* Table cell truncation styles */
+        .table-cell-truncated { max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; position: relative; transition: all 0.2s ease; }
+        .table-cell-truncated:hover { background: var(--bg-hover); }
+        .truncation-toggle { background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 8px 12px; color: var(--text-secondary); cursor: pointer; transition: all 0.2s ease; font-size: 12px; display: flex; align-items: center; gap: 8px; }
+        .truncation-toggle:hover { background: var(--bg-hover); color: var(--text-primary); }
+        .truncation-toggle.active { background: var(--accent-blue); border-color: var(--accent-blue); color: var(--bg-primary); }
+        .pdf-download-btn { background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 8px 12px; color: var(--text-secondary); cursor: pointer; transition: all 0.2s ease; font-size: 13px; display: flex; align-items: center; gap: 6px; font-family: var(--font-mono); }
+        .pdf-download-btn:hover { background: var(--bg-hover); color: var(--text-primary); }
+        .pdf-download-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .pdf-download-btn.downloading { background: var(--accent-blue); border-color: var(--accent-blue); color: var(--bg-primary); }
+        /* Responsive Design - Touch Devices */
+        @media (max-width: 1200px) {
+            .sidebar { width: 280px; min-width: 280px; }
+            .main-content { margin-left: 280px; }
+            .content-area { padding: 24px; max-width: 100%; }
+            .toc-list { columns: 1; }
+        }
+        @media (max-width: 1024px) {
+            .sidebar { width: 260px; min-width: 260px; }
+            .main-content { margin-left: 260px; }
+            .content-area { padding: 20px; }
+            .top-bar { padding: 12px 20px; gap: 12px; }
+        }
+        @media (max-width: 768px) {
+            /* Layout adjustments */
+            .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; width: 280px; }
+            .sidebar.open { transform: translateX(0); z-index: 200; box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3); }
+            .main-content { margin-left: 0; }
+            .content-area { padding: 16px; max-width: 100%; }
+            .top-bar { padding: 12px 16px; gap: 8px; }
+            .top-bar-left { gap: 12px; }
+            .top-bar-right { gap: 8px; }
+            
+            /* Search container - hide on mobile, show toggle */
+            .search-container { display: none; }
+            .mobile-menu-btn { display: flex; min-width: 44px; min-height: 44px; }
+            
+            /* Navigation adjustments */
+            .master-toc-container { margin-bottom: 8px; }
+            .special-nav-item { padding: 12px; min-height: 44px; }
+            .nav-item { padding: 10px 12px; min-height: 44px; margin-left: 12px; }
+            .nav-dropdown-header { padding: 10px 12px; min-height: 44px; }
+            
+            /* Content adjustments */
+            .toc-list { columns: 1; }
+            .toc-container { padding: 16px; margin-bottom: 24px; }
+            .content-title { font-size: 24px; margin-bottom: 4px; }
+            .content-header { margin-bottom: 20px; padding-bottom: 16px; }
+            
+            /* Markdown body */
+            .markdown-body h1 { font-size: 22px; margin: 24px 0 12px; }
+            .markdown-body h2 { font-size: 18px; margin: 20px 0 10px; }
+            .markdown-body h3 { font-size: 16px; margin: 16px 0 8px; }
+            .markdown-body h4, .markdown-body h5, .markdown-body h6 { font-size: 14px; margin: 12px 0 6px; }
+            .markdown-body p { margin: 12px 0; font-size: 16px; }
+            .markdown-body code { font-size: 12px; padding: 2px 4px; }
+            .markdown-body pre { padding: 12px; margin: 12px 0; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+            
+            /* Tables */
+            .markdown-body table { font-size: 13px; margin: 12px 0; }
+            .markdown-body th, .markdown-body td { padding: 8px 10px; }
+            
+            /* Buttons and controls */
+            .truncation-toggle { min-height: 44px; padding: 10px; font-size: 12px; }
+            .theme-toggle { min-height: 44px; min-width: 44px; padding: 8px; }
+            .pdf-download-btn { min-height: 44px; padding: 10px; font-size: 12px; }
+            .search-btn { min-height: 44px; min-width: 44px; padding: 10px; }
+            
+            /* Filter and table controls */
+            .table-filter-wrapper { padding: 10px; margin-bottom: 8px; }
+            .filter-rule { gap: 8px; }
+            .filter-rule select, .filter-rule input { padding: 8px 6px; font-size: 12px; min-height: 40px; }
+            .filter-btn { min-height: 40px; padding: 8px 10px; font-size: 11px; }
+            .copy-table-btn { min-height: 40px; padding: 8px 10px; }
+            
+            /* Modal adjustments */
+            .password-modal { padding: 24px; max-width: 90%; }
+            .password-input { padding: 12px; font-size: 16px; }
+            .password-btn { padding: 12px; min-height: 44px; font-size: 14px; }
+            
+            /* Media gallery */
+            .media-gallery { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+            .media-item-title { font-size: 14px; }
+            .media-item-caption { font-size: 12px; }
+        }
+        @media (max-width: 600px) {
+            /* Extra small screens */
+            .sidebar { width: 100%; max-width: 280px; }
+            .sidebar-header { padding: 16px; }
+            .sidebar-title { font-size: 13px; }
+            .sidebar-logo { font-size: 12px; }
+            
+            .content-area { padding: 12px; }
+            .top-bar { padding: 10px 12px; }
+            .breadcrumb { font-size: 11px; display: none; }
+            
+            /* Content */
+            .content-title { font-size: 20px; gap: 8px; }
+            .content-title-emoji { font-size: 24px; }
+            .content-meta { font-size: 10px; }
+            
+            /* Typography */
+            .markdown-body h1 { font-size: 18px; margin: 16px 0 8px; padding-bottom: 8px; }
+            .markdown-body h2 { font-size: 16px; margin: 12px 0 6px; }
+            .markdown-body h3 { font-size: 14px; margin: 10px 0 4px; }
+            .markdown-body p { font-size: 14px; margin: 8px 0; }
+            .markdown-body ul, .markdown-body ol { padding-left: 20px; margin: 8px 0; }
+            .markdown-body li { margin: 4px 0; }
+            
+            /* Tables - horizontal scroll */
+            .markdown-body table { font-size: 12px; display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; }
+            .markdown-body th, .markdown-body td { padding: 6px 8px; }
+            
+            /* Buttons */
+            .truncation-toggle { padding: 8px; font-size: 11px; }
+            .pdf-download-btn { padding: 8px 10px; font-size: 11px; }
+            
+            /* TOC */
+            .toc-container { padding: 12px; margin-bottom: 16px; }
+            .toc-title { font-size: 10px; margin-bottom: 8px; }
+            .toc-link { font-size: 12px; }
+        }
+        @media (max-width: 480px) {
+            /* Phones */
+            .main-content { margin-left: 0; }
+            .content-area { padding: 8px; }
+            .top-bar { padding: 8px 10px; gap: 4px; }
+            .top-bar-right { gap: 4px; }
+            
+            /* Hide less important buttons on very small screens */
+            .pdf-download-btn span:last-child { display: none; }
+            .pdf-download-btn { padding: 8px; }
+            
+            .content-title { font-size: 18px; margin-bottom: 2px; }
+            .content-title-emoji { font-size: 20px; }
+            
+            /* Navigation */
+            .special-nav-item { font-size: 12px; padding: 10px; }
+            .nav-item { font-size: 12px; padding: 8px; margin-left: 8px; }
+            
+            /* Markdown */
+            .markdown-body h1 { font-size: 16px; margin: 12px 0 6px; }
+            .markdown-body h2 { font-size: 14px; margin: 10px 0 4px; }
+            .markdown-body h3 { font-size: 12px; margin: 8px 0 2px; }
+            .markdown-body p { font-size: 13px; margin: 6px 0; line-height: 1.5; }
+            .markdown-body code { font-size: 11px; }
+            .markdown-body pre { padding: 8px; font-size: 11px; }
+            
+            .markdown-body table { font-size: 11px; }
+            .markdown-body th, .markdown-body td { padding: 4px 6px; }
+            
+            /* TOC */
+            .toc-list { columns: 1; }
+            .toc-item { margin: 3px 0; }
+            .toc-link { font-size: 11px; }
+            
+            /* Blocks */
+            .markdown-body blockquote { padding-left: 12px; margin: 8px 0; }
+            .markdown-body hr { margin: 16px 0; }
+        }
+        @media (touch-enabled), (hover: none) {
+            /* Touch-friendly adjustments */
+            .nav-item:hover { transform: none; background: var(--bg-hover); }
+            .special-nav-item:hover { transform: none; background: var(--bg-hover); opacity: 0.8; }
+            .toc-link:hover { background: var(--bg-tertiary); }
+            .markdown-body a { padding: 2px 2px; border-radius: 2px; }
+            .markdown-body a:active { background: var(--highlight-bg); }
+            .search-btn { -webkit-user-select: none; user-select: none; }
+            .copy-table-btn { -webkit-user-select: none; user-select: none; }
+        }
         .mobile-menu-btn { display: none; background: transparent; border: none; color: var(--text-primary); font-size: 24px; cursor: pointer; padding: 4px; }
         /* Protection styles: disable selection, image/link interaction and printing for protected content */
         .nav-item-protect { margin-left: 6px; font-size: 12px; color: var(--accent-purple); }
@@ -257,7 +426,14 @@
         .protected-content img, .protected-content video { pointer-events: none; -webkit-user-drag: none; }
         .protected-content a { pointer-events: none; color: inherit; text-decoration: none; }
         .protected-print-notice { display: none; font-family: var(--font-mono); font-size: 13px; color: var(--accent-red); padding: 8px 0; }
-        @media print { .protected-content { display: none !important; } .protected-print-notice { display: block !important; } }
+        @media print { 
+            .protected-content { display: none !important; } 
+            .protected-print-notice { display: block !important; }
+            .table-filter-wrapper { display: none !important; }
+            .top-bar { display: none !important; }
+            .sidebar { display: none !important; }
+            .main-content { margin-left: 0 !important; }
+        }
     </style>
 </head>
 <body>
@@ -313,6 +489,8 @@
                     </div>
                 </div>
                 <div class="top-bar-right">
+                    <button class="pdf-download-btn" id="pdfDownloadBtn" title="Download as PDF">📥 PDF</button>
+                    <button class="truncation-toggle" id="truncationToggle" title="Toggle table cell truncation">📋 Full Text</button>
                     <button class="theme-toggle" id="themeToggle" title="Toggle light/dark mode">🌙</button>
                 </div>
             </header>
@@ -350,11 +528,11 @@ window.combinedV01Meta = { name: "Python Collection", emoji: "🐍", description
 window.combinedV02Meta = { name: "Data Collection", emoji: "📊", description: "Unit V2" };
 window.publicAllMeta = { name: "Public All Notes", emoji: "🌐", description: "All public notes" };
 
-window.noteU11Content = `# Introduction to JavaScript\n\n## Overview\nJavaScript is versatile.\n\n## Features Table\n\n| Feature | Type | Supported |\n|---------|------|----------|\n| Variables | let/const | Yes |\n| Functions | Arrow | Yes |\n| Classes | ES6 | Yes |\n| Modules | ESM | Yes |\n| Async | Promise | Yes |`;
+window.noteU11Content = `# Introduction to JavaScript\n\n## Overview\nJavaScript is versatile.\n\n## Features Table\n\n| Feature | Type | Supported |\n|---------|------|----------|\n| Variables | let/const | Yes १२ माघ, काठमाडौं । सुनसरी-१ का उम्मेदवार हर्क साम्पाङविरुद्ध निर्वाचन आयोगमा उजुरी परेको छ । श्रम संस्कृति पार्टीका अध्यक्षसमेत रहेका साम्पाङले चुनावी प्रचारप्रचारमा बालबालिकाको प्रयोग गरेको आरोपमा उजुरी परेको हो । <br>१२ माघ, काठमाडौं । सुनसरी-१ का उम्मेदवार हर्क साम्पाङविरुद्ध निर्वाचन आयोगमा उजुरी परेको छ । श्रम संस्कृति पार्टीका अध्यक्षसमेत रहेका साम्पाङले चुनावी प्रचारप्रचारमा बालबालिकाको प्रयोग गरेको आरोपमा उजुरी परेको हो ।|\n| Functions | Arrow | Yes |\n| Classes | ES6 | Yes |\n| Modules | ESM | Yes |\n| Async | Promise | Yes |`;
 window.noteU11Meta = { name: "JS Basics", emoji: "📒", password: null, protection: "NO" };
 
 window.noteU12Content = `# Advanced JavaScript\n\n## Closures\nClosures capture scope.\n\n## Performance\n\n| Method | Speed | Memory |\n|--------|-------|--------|\n| Callbacks | Fast | Low |\n| Promises | Medium | Medium |\n| Async/Await | Medium | Medium |`;
-window.noteU12Meta = { name: "JS Advanced", emoji: "📗", password: null, protection: "NO" };
+window.noteU12Meta = { name: "JS Advanced", emoji: "📗", password: null, protection: "YES" };
 
 window.noteU13Content = `# Security Patterns (Locked)\n\n## Auth Table\n\n| Method | Level |\n|--------|-------|\n| JWT | High |\n| OAuth | Very High |`;
 window.noteU13Meta = { name: "Security", emoji: "🔒", password: "secret123", protection: "YES" };
@@ -384,6 +562,7 @@ window.noteW12Content = `# देवनागरी\n\n## वर्णमाल�
 window.noteW12Meta = { name: "देवनागरी", emoji: "📜", password: null, protection: "NO" };
     </script>
     <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script>
 // ========================================
 // Application State
@@ -393,7 +572,125 @@ const AppState = {
     unitMeta: new Map(), combinedMeta: new Map(), currentNote: null,
     unlockedNotes: new Set(), searchMatches: [], currentMatchIndex: -1, currentProtected: false,
     originalContent: '', hasReadme: false, combinedViewHeadingMap: {},
-    headingIdMap: {}, headingCounter: 0
+    headingIdMap: {}, headingCounter: 0, truncateTableCells: true, allTableCells: []
+};
+
+// ========================================
+// PDF Download Manager
+// ========================================
+const PDFDownloadManager = {
+    init() {
+        const btn = document.getElementById('pdfDownloadBtn');
+        if (btn) {
+            btn.addEventListener('click', () => this.downloadPDF());
+        }
+    },
+    async downloadPDF() {
+        const btn = document.getElementById('pdfDownloadBtn');
+        const contentArea = document.getElementById('contentArea');
+        const markdownBody = document.getElementById('markdownBody');
+        
+        if (!markdownBody) {
+            alert('No content to download');
+            return;
+        }
+        
+        btn.disabled = true;
+        btn.classList.add('downloading');
+        const originalText = btn.textContent;
+        btn.textContent = '⏳ Generating...';
+        
+        try {
+            // Create a temporary style element for PDF-specific styling
+            const pdfStyleId = 'pdf-temp-styles';
+            let pdfStyle = document.getElementById(pdfStyleId);
+            if (!pdfStyle) {
+                pdfStyle = document.createElement('style');
+                pdfStyle.id = pdfStyleId;
+                pdfStyle.textContent = `
+                    @media print {
+                        .markdown-body h1 { font-size: 18px !important; font-weight: 700 !important; margin: 16px 0 8px !important; padding-bottom: 8px !important; border-bottom: 2px solid #000 !important; }
+                        .markdown-body h2 { font-size: 16px !important; font-weight: 700 !important; margin: 14px 0 8px !important; color: #000 !important; }
+                        .markdown-body h3 { font-size: 14px !important; font-weight: 700 !important; margin: 12px 0 6px !important; }
+                        .markdown-body h4, .markdown-body h5, .markdown-body h6 { font-size: 13px !important; font-weight: 700 !important; margin: 10px 0 6px !important; }
+                        .markdown-body { color: #000 !important; font-size: 12px !important; line-height: 1.6 !important; }
+                        .markdown-body p { margin: 8px 0 !important; }
+                        .markdown-body a { color: #0366d6 !important; }
+                        .markdown-body table { font-size: 11px !important; }
+                        .markdown-body code { background: #f6f8fa !important; color: #24292e !important; }
+                        .markdown-body pre { background: #f6f8fa !important; color: #24292e !important; }
+                    }
+                `;
+                document.head.appendChild(pdfStyle);
+            }
+            
+            // Save original display states
+            const topBar = document.querySelector('.top-bar');
+            const tableFilters = document.querySelectorAll('.table-filter-wrapper');
+            const tocContainer = document.getElementById('toc-container');
+            const sidebar = document.getElementById('sidebar');
+            
+            const savedStates = {
+                topBar: topBar ? topBar.style.display : '',
+                sidebar: sidebar ? sidebar.style.display : '',
+                tocContainer: tocContainer ? tocContainer.style.display : '',
+                filters: []
+            };
+            
+            tableFilters.forEach(filter => {
+                savedStates.filters.push(filter.style.display);
+                filter.style.display = 'none';
+            });
+            
+            // Hide elements for PDF
+            if (topBar) topBar.style.display = 'none';
+            if (tocContainer) tocContainer.style.display = 'none';
+            if (sidebar) sidebar.style.display = 'none';
+            
+            // Get the title for the PDF filename
+            const titleEl = contentArea.querySelector('.content-title');
+            const titleText = titleEl ? titleEl.textContent.trim().substring(1).trim() : 'Document';
+            const filename = `${titleText.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_${new Date().toISOString().split('T')[0]}.pdf`;
+            
+            // Configure html2pdf options with improved quality settings
+            const opt = {
+                margin: 10,
+                filename: filename,
+                image: { type: 'png', quality: 1 },
+                html2canvas: { scale: 1, useCORS: true, allowTaint: true, logging: false, backgroundColor: '#ffffff' },
+                jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4', compress: false }
+            };
+            
+            // Generate PDF from the actual contentArea in the DOM
+            await html2pdf().set(opt).from(contentArea).save();
+            
+            // Restore original display states
+            if (topBar) topBar.style.display = savedStates.topBar;
+            if (tocContainer) tocContainer.style.display = savedStates.tocContainer;
+            if (sidebar) sidebar.style.display = savedStates.sidebar;
+            tableFilters.forEach((filter, idx) => {
+                filter.style.display = savedStates.filters[idx];
+            });
+            
+            // Remove temporary style
+            if (pdfStyle && pdfStyle.parentNode) {
+                pdfStyle.parentNode.removeChild(pdfStyle);
+            }
+            
+            btn.textContent = '✓ Done!';
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.disabled = false;
+                btn.classList.remove('downloading');
+            }, 1500);
+        } catch (error) {
+            console.error('PDF generation error:', error);
+            alert('Error generating PDF: ' + error.message);
+            btn.textContent = originalText;
+            btn.disabled = false;
+            btn.classList.remove('downloading');
+        }
+    }
 };
 
 // ========================================
@@ -421,6 +718,51 @@ const ThemeManager = {
     toggle() {
         const isDark = !document.body.classList.contains('light-mode');
         this.setTheme(isDark ? 'light' : 'dark');
+    }
+};
+
+// ========================================
+// Truncation Management
+// ========================================
+const TruncationManager = {
+    init() {
+        const savedTruncate = localStorage.getItem('truncateTableCells');
+        AppState.truncateTableCells = savedTruncate !== 'false';
+        const btn = document.getElementById('truncationToggle');
+        this.updateUI();
+        btn.addEventListener('click', () => this.toggle());
+    },
+    toggle() {
+        AppState.truncateTableCells = !AppState.truncateTableCells;
+        localStorage.setItem('truncateTableCells', AppState.truncateTableCells);
+        this.updateUI();
+        this.applyToAllTables();
+    },
+    updateUI() {
+        const btn = document.getElementById('truncationToggle');
+        if (AppState.truncateTableCells) {
+            btn.textContent = '📋 Full Text';
+            btn.classList.remove('active');
+        } else {
+            btn.textContent = '📋 Truncated';
+            btn.classList.add('active');
+        }
+    },
+    applyToAllTables() {
+        const body = document.getElementById('markdownBody');
+        if (!body) return;
+        body.querySelectorAll('table').forEach(table => {
+            table.querySelectorAll('td').forEach(cell => {
+                this.applyToCell(cell);
+            });
+        });
+    },
+    applyToCell(cell) {
+        if (AppState.truncateTableCells) {
+            cell.classList.add('table-cell-truncated');
+        } else {
+            cell.classList.remove('table-cell-truncated');
+        }
     }
 };
 
@@ -593,7 +935,7 @@ function createUnitDropdown(group, unit) {
     for (const noteId of AppState.groups.get(group).get(unit)) {
         const note = AppState.notes.get(noteId), isLocked = note.meta.password !== null && !AppState.unlockedNotes.has(noteId), hasPwd = note.meta.password !== null;
         const item = document.createElement('div'); item.className = 'nav-item'; item.dataset.noteId = noteId;
-        item.innerHTML = `<span class="nav-item-emoji">${note.meta.emoji}</span><span class="nav-item-name">${note.meta.name}</span>${note.meta.protection === 'YES' ? '<span class="nav-item-protect">🛡️</span>' : ''}${hasPwd ? (isLocked ? '<span class="nav-item-lock">🔒</span>' : '<span class="nav-item-unlock">🔓</span>') : '<span class="nav-item-unlock">🔓</span>'}`;
+        item.innerHTML = `<span class="nav-item-emoji">${note.meta.emoji}</span><span class="nav-item-name">${note.meta.name}</span>${note.meta.protection === 'YES' ? '<span class="nav-item-protect">🚩</span>' : ''}${hasPwd ? (isLocked ? '<span class="nav-item-lock">🔒</span>' : '<span class="nav-item-unlock">🔓</span>') : '<span class="nav-item-unlock">🔓</span>'}`;
         item.addEventListener('click', e => { e.stopPropagation(); loadNote(noteId); });
         content.appendChild(item);
     }
@@ -891,6 +1233,19 @@ function setupTableFilters() {
         const headers = Array.from(table.querySelectorAll('th')).map(th => th.textContent.trim());
         if (headers.length === 0) return;
         
+        // Apply truncation to all table cells
+        table.querySelectorAll('td').forEach(cell => {
+            TruncationManager.applyToCell(cell);
+            // Add click handler to toggle full text on click
+            cell.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isCurrentlyTruncated = cell.classList.contains('table-cell-truncated');
+                if (isCurrentlyTruncated) {
+                    cell.title = cell.textContent;
+                }
+            });
+        });
+        
         // Check if this is a media table
         if (detectMediaTable(table)) {
             const gallery = convertToMediaGallery(table);
@@ -1029,16 +1384,35 @@ function copyTableToClipboard(table, button) {
 function getTableData(table) {
     const headers = [];
     const rows = [];
+    
+    // Helper function to extract text preserving line breaks
+    const getCellContent = (cell) => {
+        const cloned = cell.cloneNode(true);
+        let text = '';
+        cloned.childNodes.forEach(node => {
+            if (node.nodeType === Node.TEXT_NODE) {
+                text += node.textContent;
+            } else if (node.nodeType === Node.ELEMENT_NODE) {
+                if (node.tagName === 'BR') {
+                    text += '\n';
+                } else {
+                    text += node.textContent;
+                }
+            }
+        });
+        return text.trim();
+    };
+    
     table.querySelectorAll('thead tr').forEach(row => {
-        row.querySelectorAll('th').forEach(cell => headers.push(cell.textContent.trim()));
+        row.querySelectorAll('th').forEach(cell => headers.push(getCellContent(cell)));
     });
     if (headers.length === 0) {
         const firstRow = table.querySelector('tr');
-        if (firstRow) firstRow.querySelectorAll('th').forEach(cell => headers.push(cell.textContent.trim()));
+        if (firstRow) firstRow.querySelectorAll('th').forEach(cell => headers.push(getCellContent(cell)));
     }
     table.querySelectorAll('tbody tr, tr:not(:first-child)').forEach(row => {
         const cells = [];
-        row.querySelectorAll('td, th').forEach(cell => cells.push(cell.textContent.trim()));
+        row.querySelectorAll('td, th').forEach(cell => cells.push(getCellContent(cell)));
         if (cells.length > 0) rows.push(cells);
     });
     return { headers, rows };
@@ -1046,10 +1420,11 @@ function getTableData(table) {
 
 function tableToMarkdown(data) {
     const { headers, rows } = data;
-    let markdown = '| ' + headers.join(' | ') + ' |\n';
+    const escapeMarkdown = (str) => str.replace(/\n/g, '<br>');
+    let markdown = '| ' + headers.map(escapeMarkdown).join(' | ') + ' |\n';
     markdown += '|' + headers.map(() => '---|').join('') + '\n';
     rows.forEach(row => {
-        markdown += '| ' + row.join(' | ') + ' |\n';
+        markdown += '| ' + row.map(escapeMarkdown).join(' | ') + ' |\n';
     });
     return markdown;
 }
@@ -1066,12 +1441,20 @@ function tableToJSON(data) {
 
 function tableToHTML(data) {
     const { headers, rows } = data;
+    const escapeHTML = (str) => {
+        const div = document.createElement('div');
+        div.textContent = str;
+        let html = div.innerHTML;
+        // Preserve line breaks as <br> tags
+        html = html.replace(/\n/g, '<br>');
+        return html;
+    };
     let html = '<table>\n<thead>\n<tr>\n';
-    headers.forEach(header => html += `<th>${header}</th>\n`);
+    headers.forEach(header => html += `<th>${escapeHTML(header)}</th>\n`);
     html += '</tr>\n</thead>\n<tbody>\n';
     rows.forEach(row => {
         html += '<tr>\n';
-        row.forEach(cell => html += `<td>${cell}</td>\n`);
+        row.forEach(cell => html += `<td>${escapeHTML(cell)}</td>\n`);
         html += '</tr>\n';
     });
     html += '</tbody>\n</table>';
@@ -1081,7 +1464,8 @@ function tableToHTML(data) {
 function tableToCSV(data) {
     const { headers, rows } = data;
     const escapeCSV = (str) => {
-        if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+        // CSV fields with line breaks, commas, or quotes must be quoted and internal quotes doubled
+        if (str.includes(',') || str.includes('"') || str.includes('\n') || str.includes('\r')) {
             return '"' + str.replace(/"/g, '""') + '"';
         }
         return str;
@@ -1095,6 +1479,7 @@ function tableToCSV(data) {
 
 function tableToTSV(data) {
     const { headers, rows } = data;
+    // TSV: preserve line breaks as-is within tab-separated values
     let tsv = headers.join('\t') + '\n';
     rows.forEach(row => {
         tsv += row.join('\t') + '\n';
@@ -1357,6 +1742,8 @@ function setupEventListeners() {
 // ========================================
 async function init() {
     ThemeManager.init();
+    TruncationManager.init();
+    PDFDownloadManager.init();
     discoverNotes();
     await initPyodide();
     buildNavigation();
