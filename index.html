@@ -75,6 +75,9 @@
         .special-nav-item { display: flex; align-items: center; padding: 10px 16px; margin-bottom: 12px; border-radius: var(--radius-md); cursor: pointer; transition: all 0.2s ease; font-family: var(--font-mono); font-size: 13px; }
         .special-nav-item:hover { transform: translateX(4px); }
         .special-nav-item.active { color: var(--bg-primary) !important; }
+        .help-item { background: linear-gradient(135deg, rgba(63, 185, 80, 0.1), rgba(163, 113, 247, 0.1)); border: 1px solid var(--accent-green); color: var(--accent-green); }
+        .help-item:hover { background: linear-gradient(135deg, rgba(63, 185, 80, 0.2), rgba(163, 113, 247, 0.2)); }
+        .help-item.active { background: var(--accent-green); }
         .readme-item { background: linear-gradient(135deg, rgba(88, 166, 255, 0.1), rgba(163, 113, 247, 0.1)); border: 1px solid var(--accent-blue); color: var(--accent-blue); }
         .readme-item:hover { background: linear-gradient(135deg, rgba(88, 166, 255, 0.2), rgba(163, 113, 247, 0.2)); }
         .readme-item.active { background: var(--accent-blue); }
@@ -167,6 +170,7 @@
         .markdown-body hr { border: none; border-top: 1px solid var(--border-color); margin: 32px 0; }
         .markdown-body tr.filtered-out { display: none; }
         .markdown-body tr.filter-match { background: rgba(88, 166, 255, 0.1); }
+        .markdown-body tr.entries-hidden { display: none; }
         .search-highlight { background: var(--highlight-bg); color: #000; padding: 1px 2px; border-radius: 2px; }
         .search-highlight.active { background: var(--highlight-active); color: #fff; box-shadow: 0 0 0 2px var(--highlight-active); }
         .table-filter-wrapper { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 12px; margin-bottom: 8px; }
@@ -174,6 +178,21 @@
         .table-filter-title { font-family: var(--font-mono); font-size: 11px; font-weight: 600; color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 1px; }
         .table-filter-toggle { background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 4px 8px; font-family: var(--font-mono); font-size: 10px; color: var(--text-secondary); cursor: pointer; }
         .table-filter-toggle:hover { background: var(--bg-hover); color: var(--text-primary); }
+        .entries-selector-wrapper { display: flex; align-items: center; gap: 6px; }
+        .entries-label { font-family: var(--font-mono); font-size: 10px; color: var(--text-secondary); }
+        .entries-dropdown { background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 5px 8px; font-family: var(--font-mono); font-size: 11px; color: var(--text-primary); cursor: pointer; }
+        .entries-dropdown:hover { background: var(--bg-hover); }
+        .entries-dropdown:focus { outline: none; border-color: var(--accent-blue); }
+        .sort-controls-wrapper { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+        .sort-label { font-family: var(--font-mono); font-size: 10px; color: var(--text-secondary); }
+        .sort-select, .sort-method-select { background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 5px 8px; font-family: var(--font-mono); font-size: 11px; color: var(--text-primary); cursor: pointer; }
+        .sort-select:hover, .sort-method-select:hover { background: var(--bg-hover); }
+        .sort-select:focus, .sort-method-select:focus { outline: none; border-color: var(--accent-blue); }
+        .sort-function-input { background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 5px 8px; font-family: var(--font-mono); font-size: 11px; color: var(--text-primary); display: none; }
+        .sort-function-input.show { display: block; }
+        .sort-function-input:focus { outline: none; border-color: var(--accent-blue); }
+        .sort-apply-btn { background: var(--accent-blue); border: none; border-radius: var(--radius-sm); padding: 5px 10px; color: var(--bg-primary); cursor: pointer; font-family: var(--font-mono); font-size: 10px; font-weight: 600; }
+        .sort-apply-btn:hover { filter: brightness(1.1); }
         .table-filter-rules { display: flex; flex-direction: column; gap: 6px; }
         .filter-rule { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
         .filter-rule select, .filter-rule input { background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 5px 8px; font-family: var(--font-mono); font-size: 11px; color: var(--text-primary); }
@@ -190,6 +209,9 @@
         .filter-apply-btn:hover { filter: brightness(1.1); }
         .filter-clear-btn { background: var(--bg-tertiary); border: 1px solid var(--accent-red); color: var(--accent-red); }
         .filter-clear-btn:hover { background: var(--accent-red); color: #fff; }
+        .filter-refresh-btn { background: var(--bg-tertiary); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); padding: 6px 12px; border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 11px; cursor: pointer; transition: all 0.2s ease; }
+        .filter-refresh-btn:hover { background: var(--accent-cyan); color: var(--bg-primary); }
+        .refresh-ribbon { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; align-items: center; }
         .table-copy-wrapper { display: flex; justify-content: flex-end; margin-top: 8px; position: relative; }
         .copy-table-btn { background: var(--bg-tertiary); border: 1px solid var(--border-color); color: var(--text-secondary); padding: 6px 12px; border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 11px; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; gap: 6px; }
         .copy-table-btn:hover { background: var(--bg-hover); color: var(--text-primary); }
@@ -483,6 +505,7 @@
                 <div class="sidebar-title">Compiled by: <br>शिवप्रसाद आचार्य<br>M.Sc;LL.M <br>(वसन्तपञ्चमि,२०८२)</div>
             </div>
             <nav class="nav-container" id="navContainer">
+                <div class="special-nav-item help-item" id="helpItem" style="display: none;"><span class="special-nav-item-emoji">❓</span><span>Help</span></div>
                 <div class="special-nav-item readme-item" id="readmeItem" style="display: none;"><span class="special-nav-item-emoji">📘</span><span>README.md</span></div>
                 <div class="special-nav-item public-all-item" id="publicAllItem"><span class="special-nav-item-emoji">🌐</span><span>Public All Notes</span></div>
                 <div class="master-toc-container" id="masterTocContainer">
@@ -529,6 +552,232 @@
 // ========================================
 // Sample Data
 // ========================================
+window.helpContent = `# Help - Quick Reference Guide
+
+Welcome to Bharati Sutra! This guide provides quick answers to common questions and tasks.
+
+---
+
+## 📚 Quick Start
+
+### Getting Started in 30 Seconds
+1. **Open the app** → Click a note in the left sidebar
+2. **View content** → Read the rendered markdown
+3. **Search text** → Click search box (top-right), type your query
+4. **Switch theme** → Click sun/moon icon in top toolbar
+
+### First-Time Tips
+- Notes appear in the **left sidebar** under "📖 Notes"
+- Click **Master TOC** to see all available notes
+- Use **breadcrumb navigation** (top) to track your location
+- **Search** works across all visible content
+
+---
+
+## 🎯 Main Features
+
+### 1. Viewing & Searching
+| Action | How |
+|--------|-----|
+| **Read a note** | Click note name in sidebar |
+| **Search text** | Click search box, type query, use ↑↓ arrows |
+| **Find & highlight** | Use search with real-time highlighting |
+| **View TOC** | Click "Master TOC" in sidebar |
+
+### 2. Filtering & Sorting Tables
+| Action | How |
+|--------|-----|
+| **Filter table rows** | Click "Show/Hide" → Add rules → Apply |
+| **Sort table** | Click "Show/Hide" → Select column → Choose method → Apply |
+| **Reset table** | Click 🔄 Refresh button |
+| **Show fewer rows** | Use "Show" dropdown (5, 10, 25, 50, 100, All) |
+
+### 3. Exporting Data
+| Action | How |
+|--------|-----|
+| **Copy table** | Click 📋 Copy → Select format (Markdown/JSON/CSV/HTML/TSV) |
+| **Download PDF** | Click 📥 PDF button |
+| **Print note** | Press Ctrl+P (Cmd+P on Mac) |
+
+### 4. Theme & Display
+| Action | How |
+|--------|-----|
+| **Change theme** | Click 🌙/☀️ icon (top-right) |
+| **Adjust text size** | Use browser zoom (Ctrl/Cmd + ±) |
+| **Full screen** | Press F11 in browser |
+
+---
+
+## ❓ Frequently Asked Questions
+
+### How do I add my own notes?
+Edit the \`datanoteU14.js\` file and add your content to the note structure. See README.md for detailed configuration.
+
+### Why can't I sort/filter?
+Make sure you clicked **"Show/Hide"** button first to reveal the filter panel. Some tables may be locked.
+
+### How do I search in multiple notes?
+The search works on the **currently displayed note**. To search across notes, you need to read through them individually or use your browser's find function (Ctrl+F).
+
+### Can I password-protect my notes?
+Yes! Add \`meta: { password: "yourPassword" }\` to a note configuration. See README.md for details.
+
+### How do I export filtered results?
+1. Apply your filters
+2. Click 📋 Copy
+3. Select format
+4. Only filtered rows are exported
+
+### Does this work offline?
+Yes! Open \`index.html\` locally in your browser. No internet needed.
+
+### Can I print tables cleanly?
+Yes! Press Ctrl+P to print. Filters and search bars automatically hide. Use "Save as PDF" for digital copies.
+
+### How do I reset a table to original state?
+Click the 🔄 **Refresh** button. It undoes all sorting, filtering, and column changes instantly.
+
+---
+
+## ⚡ Common Tasks
+
+### Task: Find all Active Users
+\`\`\`
+1. Navigate to Users table
+2. Click "Show/Hide"
+3. Column: Status | Operator: equals | Value: Active
+4. Click "Apply"
+5. Result: Only active users shown
+\`\`\`
+
+### Task: Sort by Highest Sales
+\`\`\`
+1. Navigate to Sales table
+2. Click "Show/Hide"
+3. Sort by: Sales column | Method: Descending
+4. Click "Apply Sort"
+5. Result: Highest sales first
+\`\`\`
+
+### Task: Export 25 employees to Excel
+\`\`\`
+1. Go to Employee table
+2. Set "Show" to 25 entries
+3. Click 📋 Copy → Select "CSV"
+4. Paste into Excel
+5. Done!
+\`\`\`
+
+### Task: Find text in a note
+\`\`\`
+1. Click search box (top-right)
+2. Type your search term
+3. Use ↑↓ arrows to navigate matches
+4. Click X to close search
+\`\`\`
+
+### Task: Compare filtered results in Excel
+\`\`\`
+1. Apply filters to table
+2. Click 📋 Copy → JSON
+3. Use online JSON-to-CSV converter
+4. Paste into Excel
+5. Analyze data
+\`\`\`
+
+---
+
+## 🔧 Troubleshooting
+
+### Problem: Search not working
+**Solution:** Make sure you typed in the search box and it has focus (cursor visible).
+
+### Problem: Filter shows no results
+**Solution:** 
+- Check if filter rules are too restrictive
+- Try clearing filters and applying simpler rules
+- Verify the search value matches actual data
+
+### Problem: Sort doesn't work
+**Solution:**
+- Make sure you selected a column
+- Click "Apply Sort" button
+- Check console for errors (F12)
+
+### Problem: Can't copy table
+**Solution:**
+- Some tables may be protected
+- Try a different format
+- Check browser console (F12) for errors
+
+### Problem: PDF download doesn't start
+**Solution:**
+- Check browser's download settings
+- Allow pop-ups for this site
+- Try a different browser
+
+### Problem: Theme not saving
+**Solution:**
+- Check if browser allows local storage
+- Disable privacy mode/incognito
+- Clear browser cache and try again
+
+### Problem: Mobile view looks broken
+**Solution:**
+- Try rotating device
+- Increase browser zoom slightly
+- Disable browser zoom and try again
+
+---
+
+## 🎨 Keyboard Shortcuts
+
+| Shortcut | Action |
+|----------|--------|
+| \`/\` | Focus search box |
+| \`Escape\` | Clear search / Close modals |
+| \`Ctrl+P\` / \`Cmd+P\` | Print page |
+| \`Ctrl+Shift+D\` | Toggle theme |
+| \`Ctrl+F\` | Browser find (searches current page) |
+
+---
+
+## 📞 Need More Help?
+
+- **Full Documentation**: See **README.md** for detailed guides
+- **Table Features**: Check README → Usage Guide → Advanced Filtering/Sorting
+- **Export Formats**: Check README → Table Export Formats
+- **Configuration**: Check README → Configuration section
+
+---
+
+## 💡 Pro Tips
+
+✅ **Use Custom Functions** for advanced sorting (extract numbers, dates, etc.)
+
+✅ **Combine Filters** with AND/OR logic for complex queries
+
+✅ **Export Early** - Copy filtered/sorted data to external tools for analysis
+
+✅ **Use PDF Export** to share notes with others professionally
+
+✅ **Master TOC** saves time - see all notes at a glance
+
+✅ **Refresh Button** beats page reload - instant reset without losing position
+
+---
+
+## 🚀 Performance Tips
+
+- **Large tables?** Use "Show" dropdown to display fewer rows at once
+- **Lots of notes?** Use search to quickly find specific content
+- **Multiple filters?** Start simple, then add complexity
+- **Export often** - Store important data externally as backup
+
+---
+
+Last updated: January 2026`;
+window.helpMeta = { name: "Help", emoji: "❓", password: null, protection: "NO" };
 window.readmeContent = `# 📚 Markdown Notes Viewer\n\nWelcome to the Markdown Notes Viewer!\n\n## Features\n\n- Multi-level nested navigation\n- Password-protected notes\n- Combined views (U0, U01)\n- Public All Notes view\n- Advanced table filtering\n- Nepali/Devanagari search\n\n## Usage\n\nClick notes in the sidebar to view them.`;
 window.readmeMeta = { name: "README", emoji: "📘", password: null, protection: "NO" };
 
@@ -890,10 +1139,10 @@ function fallbackRender(content) {
 // Navigation
 // ========================================
 function buildNavigation() {
-    const nav = document.getElementById('navContainer'), readme = document.getElementById('readmeItem'),
+    const nav = document.getElementById('navContainer'), help = document.getElementById('helpItem'), readme = document.getElementById('readmeItem'),
           publicAll = document.getElementById('publicAllItem'), masterToc = document.getElementById('masterTocContainer');
     nav.innerHTML = '';
-    if (AppState.hasReadme) { readme.style.display = 'flex'; nav.appendChild(readme); }
+    if (AppState.hasReadme) { help.style.display = 'flex'; nav.appendChild(help); readme.style.display = 'flex'; nav.appendChild(readme); }
     nav.appendChild(publicAll);
     nav.appendChild(masterToc);
     for (const group of Array.from(AppState.groups.keys()).sort()) nav.appendChild(createGroupDropdown(group));
@@ -971,6 +1220,17 @@ function countPublicNotesInUnit(g, u) { let c = 0; for (const id of AppState.gro
 // ========================================
 // Loading Content
 // ========================================
+async function loadHelp() {
+    if (!AppState.hasReadme) return;
+    AppState.currentNote = 'help';
+    updateBreadcrumb({ meta: window.helpMeta });
+    document.getElementById('contentArea').innerHTML = '<div class="loading-container"><div class="loading-spinner"></div><div>Loading...</div></div>';
+    const rendered = await renderMarkdown(window.helpContent);
+    displayRenderedContent({ meta: window.helpMeta }, rendered);
+    document.querySelectorAll('.nav-item,.special-nav-item').forEach(el => el.classList.remove('active'));
+    document.getElementById('helpItem').classList.add('active');
+}
+
 async function loadReadme() {
     if (!AppState.hasReadme) return;
     AppState.currentNote = 'readme';
@@ -1283,7 +1543,7 @@ function setupTableFilters() {
         const wrapper = document.createElement('div'); wrapper.className = 'table-filter-wrapper'; wrapper.id = `filter-${idx}`;
         const columnSelectorId = `col-selector-${idx}`;
         const columnDropdownId = `col-dropdown-${idx}`;
-        wrapper.innerHTML = `<div class="table-filter-header"><span class="table-filter-title">🔍 Filter Table</span><button class="table-filter-toggle" data-idx="${idx}">Show/Hide</button></div><div class="table-filter-rules" id="rules-${idx}" style="display:none;"></div><div class="filter-actions" id="actions-${idx}" style="display:none;"><button class="filter-btn filter-add-btn" data-idx="${idx}">+ Add Rule</button><button class="filter-btn filter-apply-btn" data-idx="${idx}">Apply</button><button class="filter-btn filter-clear-btn" data-idx="${idx}">Clear</button></div><div class="filter-results" id="results-${idx}"></div><div class="table-copy-wrapper" style="display: flex; gap: 8px; align-items: center;"><div class="column-selector-wrapper"><button class="column-selector-btn" id="${columnSelectorId}" title="Select columns to copy">📊 Columns</button><div class="column-selector-dropdown" id="${columnDropdownId}"><div class="column-selector-header"><label class="column-select-all"><input type="checkbox" class="select-all-cols" data-idx="${idx}" checked><span>All Columns</span></label></div><div class="column-items-list" id="cols-list-${idx}"></div><div class="column-selector-footer"><span id="col-count-${idx}">0/0 selected</span></div></div></div><button class="copy-table-btn" data-table-idx="${idx}" title="Copy table in different formats">📋 Copy</button><div class="copy-formats-dropdown" id="dropdown-${idx}"><div class="copy-format-item" data-format="markdown">Markdown</div><div class="copy-format-item" data-format="json">JSON</div><div class="copy-format-item" data-format="html">HTML</div><div class="copy-format-item" data-format="csv">CSV</div><div class="copy-format-item" data-format="tsv">TSV</div></div></div>`;
+        wrapper.innerHTML = `<div class="table-filter-header"><span class="table-filter-title">🔍 Filter Table</span><div class="entries-selector-wrapper"><label class="entries-label">Show</label><select class="entries-dropdown" id="entries-${idx}" data-idx="${idx}"><option value="5">5</option><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option><option value="all">All</option></select><label class="entries-label">entries</label></div><div class="sort-controls-wrapper"><label class="sort-label">Sort by</label><select class="sort-select" id="sort-col-${idx}" data-idx="${idx}"><option value="">Select Column</option>${headers.map((h, i) => `<option value="${i}">${h}</option>`).join('')}</select><select class="sort-method-select" id="sort-method-${idx}" data-idx="${idx}"><option value="asc">Ascending</option><option value="desc">Descending</option><option value="alpha">Alphabetical</option><option value="func">Custom Function</option></select><input type="text" class="sort-function-input" id="sort-func-input-${idx}" placeholder="e.g., CAST(col AS UNSIGNED)" data-idx="${idx}"><button class="sort-apply-btn" id="sort-apply-${idx}" data-idx="${idx}">Apply Sort</button></div><button class="table-filter-toggle" data-idx="${idx}">Show/Hide</button><div class="refresh-ribbon"><button class="filter-btn filter-refresh-btn" data-idx="${idx}" title="Reset table to default state">🔄 Refresh</button></div></div><div class="table-filter-rules" id="rules-${idx}" style="display:none;"></div><div class="filter-actions" id="actions-${idx}" style="display:none;"><button class="filter-btn filter-add-btn" data-idx="${idx}">+ Add Rule</button><button class="filter-btn filter-apply-btn" data-idx="${idx}">Apply</button><button class="filter-btn filter-clear-btn" data-idx="${idx}">Clear</button></div><div class="filter-results" id="results-${idx}"></div><div class="table-copy-wrapper" style="display: flex; gap: 8px; align-items: center;"><div class="column-selector-wrapper"><button class="column-selector-btn" id="${columnSelectorId}" title="Select columns to copy">📊 Columns</button><div class="column-selector-dropdown" id="${columnDropdownId}"><div class="column-selector-header"><label class="column-select-all"><input type="checkbox" class="select-all-cols" data-idx="${idx}" checked><span>All Columns</span></label></div><div class="column-items-list" id="cols-list-${idx}"></div><div class="column-selector-footer"><span id="col-count-${idx}">0/0 selected</span></div></div></div><button class="copy-table-btn" data-table-idx="${idx}" title="Copy table in different formats">📋 Copy</button><div class="copy-formats-dropdown" id="dropdown-${idx}"><div class="copy-format-item" data-format="markdown">Markdown</div><div class="copy-format-item" data-format="json">JSON</div><div class="copy-format-item" data-format="html">HTML</div><div class="copy-format-item" data-format="csv">CSV</div><div class="copy-format-item" data-format="tsv">TSV</div></div></div>`;
         table.parentNode.insertBefore(wrapper, table);
         wrapper.querySelector('.table-filter-toggle').addEventListener('click', () => {
             const rules = document.getElementById(`rules-${idx}`), actions = document.getElementById(`actions-${idx}`);
@@ -1295,6 +1555,38 @@ function setupTableFilters() {
         wrapper.querySelector('.filter-add-btn').addEventListener('click', () => addFilterRule(idx, headers));
         wrapper.querySelector('.filter-apply-btn').addEventListener('click', () => applyTableFilter(idx, table, headers));
         wrapper.querySelector('.filter-clear-btn').addEventListener('click', () => clearTableFilter(idx, table));
+        wrapper.querySelector('.filter-refresh-btn').addEventListener('click', () => refreshTableToDefault(idx, table));
+        
+        // Initialize entries selector
+        const entriesSelect = wrapper.querySelector(`#entries-${idx}`);
+        entriesSelect.addEventListener('change', () => applyEntriesLimit(idx, table, entriesSelect.value));
+        // Apply default entries limit of 5 on page load
+        applyEntriesLimit(idx, table, '5');
+        
+        // Initialize sort controls
+        const sortColSelect = wrapper.querySelector(`#sort-col-${idx}`);
+        const sortMethodSelect = wrapper.querySelector(`#sort-method-${idx}`);
+        const sortFuncInput = wrapper.querySelector(`#sort-func-input-${idx}`);
+        const sortApplyBtn = wrapper.querySelector(`#sort-apply-${idx}`);
+        
+        sortMethodSelect.addEventListener('change', () => {
+            if (sortMethodSelect.value === 'func') {
+                sortFuncInput.classList.add('show');
+            } else {
+                sortFuncInput.classList.remove('show');
+            }
+        });
+        
+        sortApplyBtn.addEventListener('click', () => {
+            const colIdx = sortColSelect.value;
+            if (colIdx === '') {
+                alert('Please select a column to sort');
+                return;
+            }
+            const method = sortMethodSelect.value;
+            const funcExpr = method === 'func' ? sortFuncInput.value : '';
+            applySortToTable(idx, table, headers, colIdx, method, funcExpr);
+        });
         
         // Initialize column selector
         initializeColumnSelector(idx, headers, columnSelectorId, columnDropdownId, table);
@@ -1361,6 +1653,11 @@ function applyTableFilter(idx, table, headers) {
         else { row.classList.add('filtered-out'); row.classList.remove('filter-match'); }
     });
     document.getElementById(`results-${idx}`).textContent = `Showing ${matchCount} of ${totalCount} rows`;
+    // Reapply entries limit after filter
+    const entriesSelect = document.querySelector(`#entries-${idx}`);
+    if (entriesSelect) {
+        applyEntriesLimit(idx, table, entriesSelect.value);
+    }
 }
 
 function evaluateCondition(cellVal, op, filterVal) {
@@ -1380,8 +1677,167 @@ function evaluateCondition(cellVal, op, filterVal) {
 }
 
 function clearTableFilter(idx, table) {
-    table.querySelectorAll('tr').forEach(r => { r.classList.remove('filtered-out', 'filter-match'); });
+    table.querySelectorAll('tr').forEach(r => { r.classList.remove('filtered-out', 'filter-match', 'entries-hidden'); });
     document.getElementById(`results-${idx}`).textContent = '';
+    // Reset entries dropdown to default (5)
+    const entriesSelect = document.querySelector(`#entries-${idx}`);
+    if (entriesSelect) {
+        entriesSelect.value = '5';
+        applyEntriesLimit(idx, table, '5');
+    }
+}
+
+function refreshTableToDefault(idx, table) {
+    // Restore original row order
+    const originalRows = originalRowOrder.get(idx);
+    if (originalRows && originalRows.length > 0) {
+        const tbody = table.querySelector('tbody') || table;
+        // Remove all current rows
+        tbody.querySelectorAll('tr').forEach(row => {
+            if (row !== table.querySelector('thead tr')) {
+                row.remove();
+            }
+        });
+        // Restore original rows with cleaned state
+        originalRows.forEach(originalRow => {
+            const newRow = originalRow.cloneNode(true);
+            // Remove all filter-related classes
+            newRow.classList.remove('filtered-out', 'filter-match', 'entries-hidden');
+            tbody.appendChild(newRow);
+        });
+    } else {
+        // Fallback: just remove classes if no original rows stored
+        table.querySelectorAll('tr').forEach(r => { 
+            r.classList.remove('filtered-out', 'filter-match', 'entries-hidden');
+        });
+    }
+    
+    // Clear all filter rules
+    const rulesContainer = document.getElementById(`rules-${idx}`);
+    if (rulesContainer) {
+        rulesContainer.innerHTML = '';
+    }
+    
+    // Reset sort dropdowns
+    const sortColSelect = document.querySelector(`#sort-col-${idx}`);
+    const sortMethodSelect = document.querySelector(`#sort-method-${idx}`);
+    const sortFuncInput = document.querySelector(`#sort-func-input-${idx}`);
+    if (sortColSelect) sortColSelect.value = '';
+    if (sortMethodSelect) sortMethodSelect.value = 'asc';
+    if (sortFuncInput) {
+        sortFuncInput.value = '';
+        sortFuncInput.classList.remove('show');
+    }
+    
+    // Reset filter results and clear filter display
+    document.getElementById(`results-${idx}`).textContent = '';
+    
+    // Reset entries dropdown to default (5)
+    const entriesSelect = document.querySelector(`#entries-${idx}`);
+    if (entriesSelect) {
+        entriesSelect.value = '5';
+        applyEntriesLimit(idx, table, '5');
+    }
+    
+    // Reset column selection to all columns
+    const allCheckboxes = document.querySelectorAll(`.col-checkbox[data-table-idx="${idx}"]`);
+    allCheckboxes.forEach(checkbox => {
+        checkbox.checked = true;
+    });
+    const selectAllCheckbox = document.querySelector(`.select-all-cols[data-idx="${idx}"]`);
+    if (selectAllCheckbox) selectAllCheckbox.checked = true;
+    updateColumnSelection(idx);
+    
+    // Update all table cells visibility
+    table.querySelectorAll('th, td').forEach(cell => {
+        if (cell.dataset.colIdx !== undefined) {
+            cell.style.display = '';
+        }
+    });
+    
+    // Hide the filter rules and actions sections
+    const rules = document.getElementById(`rules-${idx}`);
+    const actions = document.getElementById(`actions-${idx}`);
+    if (rules) rules.style.display = 'none';
+    if (actions) actions.style.display = 'none';
+}
+
+function applyEntriesLimit(idx, table, entriesValue) {
+    const rows = table.querySelectorAll('tbody tr, tr:not(:first-child)');
+    let visibleCount = 0;
+    const limit = entriesValue === 'all' ? rows.length : parseInt(entriesValue);
+    
+    rows.forEach((row, index) => {
+        // Check if row is already hidden by filter
+        if (row.classList.contains('filtered-out')) {
+            row.classList.add('entries-hidden');
+        } else if (visibleCount < limit) {
+            row.classList.remove('entries-hidden');
+            visibleCount++;
+        } else {
+            row.classList.add('entries-hidden');
+        }
+    });
+}
+
+function applySortToTable(idx, table, headers, colIdx, method, funcExpr) {
+    const colIndex = parseInt(colIdx);
+    const rows = Array.from(table.querySelectorAll('tbody tr, tr:not(:first-child)'));
+    
+    const sortedRows = rows.sort((rowA, rowB) => {
+        const cellA = rowA.querySelectorAll('td')[colIndex];
+        const cellB = rowB.querySelectorAll('td')[colIndex];
+        const valA = cellA ? cellA.textContent.trim() : '';
+        const valB = cellB ? cellB.textContent.trim() : '';
+        
+        switch (method) {
+            case 'asc':
+                const numA = parseFloat(valA);
+                const numB = parseFloat(valB);
+                if (!isNaN(numA) && !isNaN(numB)) {
+                    return numA - numB;
+                }
+                return valA.localeCompare(valB);
+            case 'desc':
+                const numA2 = parseFloat(valA);
+                const numB2 = parseFloat(valB);
+                if (!isNaN(numA2) && !isNaN(numB2)) {
+                    return numB2 - numA2;
+                }
+                return valB.localeCompare(valA);
+            case 'alpha':
+                return valA.localeCompare(valB);
+            case 'func':
+                return evaluateCustomSort(valA, valB, funcExpr);
+            default:
+                return 0;
+        }
+    });
+    
+    const tbody = table.querySelector('tbody') || table;
+    sortedRows.forEach(row => {
+        tbody.appendChild(row);
+    });
+}
+
+function evaluateCustomSort(valA, valB, funcExpr) {
+    try {
+        const safeFunc = funcExpr.replace(/col/g, 'val');
+        const result = new Function('val', `return ${safeFunc}`);
+        const transformA = result(valA);
+        const transformB = result(valB);
+        
+        const numA = parseFloat(transformA);
+        const numB = parseFloat(transformB);
+        
+        if (!isNaN(numA) && !isNaN(numB)) {
+            return numA - numB;
+        }
+        return String(transformA).localeCompare(String(transformB));
+    } catch (e) {
+        console.error('Custom sort function error:', e);
+        return 0;
+    }
 }
 
 // ========================================
@@ -1389,10 +1845,17 @@ function clearTableFilter(idx, table) {
 // ========================================
 const columnSelectionState = new Map();
 const tableReferences = new Map();
+const originalRowOrder = new Map();
 
 function initializeColumnSelector(tableIdx, headers, buttonId, dropdownId, table) {
     // Store table reference for later use
     tableReferences.set(tableIdx, table);
+    
+    // Store original row order for reset functionality
+    if (!originalRowOrder.has(tableIdx)) {
+        const rows = Array.from(table.querySelectorAll('tbody tr, tr:not(:first-child)'));
+        originalRowOrder.set(tableIdx, rows.map(row => row.cloneNode(true)));
+    }
     
     // Initialize state for this table
     if (!columnSelectionState.has(tableIdx)) {
@@ -1860,6 +2323,7 @@ function setupBackToTop() {
 // ========================================
 function setupEventListeners() {
     document.getElementById('masterTocHeader').addEventListener('click', () => document.getElementById('masterTocContainer').classList.toggle('open'));
+    document.getElementById('helpItem').addEventListener('click', loadHelp);
     document.getElementById('readmeItem').addEventListener('click', loadReadme);
     document.getElementById('publicAllItem').addEventListener('click', loadPublicAllNotes);
     
