@@ -318,8 +318,8 @@
         }
         @media (max-width: 768px) {
             /* Layout adjustments */
-            .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; width: 280px; min-width: 280px; left: 0; top: 0; }
-            .sidebar.open { transform: translateX(0); z-index: 200; box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3); }
+            .sidebar { position: relative; display: none; width: 280px; min-width: 280px; }
+            .sidebar.open { display: block; }
             .main-content { margin-left: 0; }
             .content-area { padding: 16px; max-width: 100%; }
             .top-bar { padding: 12px 16px; gap: 8px; }
@@ -465,7 +465,7 @@
             .search-btn { -webkit-user-select: none; user-select: none; }
             .copy-table-btn { -webkit-user-select: none; user-select: none; }
         }
-        .mobile-menu-btn { display: none; background: transparent; border: none; color: var(--text-primary); font-size: 24px; cursor: pointer; padding: 4px; }
+        .mobile-menu-btn { display: none; background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); color: var(--text-primary); font-size: 24px; cursor: pointer; padding: 4px; }
         /* Protection styles: disable selection, image/link interaction and printing for protected content */
         .nav-item-protect { margin-left: 6px; font-size: 12px; color: var(--accent-purple); }
         .protected-content { user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; }
@@ -588,10 +588,10 @@ window.noteU13Content = `# Security Patterns (Locked)\n\n## Auth Table\n\n| Meth
 window.noteU13Meta = { name: "Security", emoji: "🔒", password: "secret123", protection: "YES" };
 
 window.noteU21Content = `# React Fundamentals\n\n## Components\nBuilding blocks of React.\n\n## Comparison\n\n| Feature | Class | Functional |\n|---------|-------|------------|\n| State | this.state | useState |\n| Lifecycle | methods | useEffect |\n\n## Resources\n\n| Resource | Link | Type |\n|----------|------|------|\n| Official Docs | https://react.dev | External |\n| Tutorial | https://react.dev/learn | External |\n| Community | https://github.com/facebook/react | Repository |`;
-window.noteU21Meta = { name: "React Basics", emoji: "⚛️", password: null, protection: "YES" };
+window.noteU21Meta = { name: "React Basics", emoji: "⚛️", password: null, protection: "NO" };
 
 window.noteU22Content = `# State Management\n\n## Solutions\n\n| Library | Size | Learning |\n|---------|------|----------|\n| Redux | Large | Steep |\n| MobX | Medium | Medium |\n| Zustand | Small | Easy |\n\n## Gallery\n\n| Title | Caption | Subcaption | URL |\n|-------|---------|------------|-----|\n| React Logo | Official React brand | Modern UI library | https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1024px-React-icon.svg.png |\n| Vue Framework | Progressive framework | Alternative to React | https://vuejs.org/images/logo.png |\n| Angular Icon | Google framework | Complete solution | https://angular.io/assets/images/logos/angular/angular.svg |`;
-window.noteU22Meta = { name: "State Mgmt", emoji: "🔄", password: "123", protection: "YES" };
+window.noteU22Meta = { name: "State Mgmt", emoji: "🔄", password: null, protection: "NO" };
 
 window.noteV11Content = `# Python Basics\n\n## Comparison\n\n| Feature | Python | Java |\n|---------|--------|------|\n| Typing | Dynamic | Static |\n| Syntax | Clean | Verbose |`;
 window.noteV11Meta = { name: "Python Intro", emoji: "🐍", password: null, protection: "NO" };
