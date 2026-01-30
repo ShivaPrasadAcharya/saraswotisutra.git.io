@@ -78,6 +78,9 @@
         .help-item { background: linear-gradient(135deg, rgba(63, 185, 80, 0.1), rgba(163, 113, 247, 0.1)); border: 1px solid var(--accent-green); color: var(--accent-green); }
         .help-item:hover { background: linear-gradient(135deg, rgba(63, 185, 80, 0.2), rgba(163, 113, 247, 0.2)); }
         .help-item.active { background: var(--accent-green); }
+        .namaste-item { background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(255, 165, 0, 0.1)); border: 1px solid #ff6b6b; color: #ff6b6b; }
+        .namaste-item:hover { background: linear-gradient(135deg, rgba(255, 107, 107, 0.2), rgba(255, 165, 0, 0.2)); }
+        .namaste-item.active { background: #ff6b6b; }
         .readme-item { background: linear-gradient(135deg, rgba(88, 166, 255, 0.1), rgba(163, 113, 247, 0.1)); border: 1px solid var(--accent-blue); color: var(--accent-blue); }
         .readme-item:hover { background: linear-gradient(135deg, rgba(88, 166, 255, 0.2), rgba(163, 113, 247, 0.2)); }
         .readme-item.active { background: var(--accent-blue); }
@@ -315,8 +318,8 @@
         }
         @media (max-width: 768px) {
             /* Layout adjustments */
-            .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; width: 280px; min-width: 280px; left: 0; top: 0; }
-            .sidebar.open { transform: translateX(0); z-index: 200; box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3); }
+            .sidebar { transform: translateX(0); transition: transform 0.3s ease; width: 280px; min-width: 280px; left: 0; top: 0; }
+            .sidebar.open { transform: translateX(-100%); z-index: 200; box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3); }
             .main-content { margin-left: 0; }
             .content-area { padding: 16px; max-width: 100%; }
             .top-bar { padding: 12px 16px; gap: 8px; }
@@ -506,6 +509,7 @@
             </div>
             <nav class="nav-container" id="navContainer">
                 <div class="special-nav-item help-item" id="helpItem" style="display: none;"><span class="special-nav-item-emoji">❓</span><span>Help</span></div>
+                <div class="special-nav-item namaste-item" id="namasteItem" style="display: none;"><span class="special-nav-item-emoji">🙏</span><span>Namaste</span></div>
                 <div class="special-nav-item readme-item" id="readmeItem" style="display: none;"><span class="special-nav-item-emoji">📘</span><span>README.md</span></div>
                 <div class="special-nav-item public-all-item" id="publicAllItem"><span class="special-nav-item-emoji">🌐</span><span>Public All Notes</span></div>
                 <div class="master-toc-container" id="masterTocContainer">
@@ -552,233 +556,9 @@
 // ========================================
 // Sample Data
 // ========================================
-window.helpContent = `# Help - Quick Reference Guide
 
-Welcome to Bharati Sutra! This guide provides quick answers to common questions and tasks.
-
----
-
-## 📚 Quick Start
-
-### Getting Started in 30 Seconds
-1. **Open the app** → Click a note in the left sidebar
-2. **View content** → Read the rendered markdown
-3. **Search text** → Click search box (top-right), type your query
-4. **Switch theme** → Click sun/moon icon in top toolbar
-
-### First-Time Tips
-- Notes appear in the **left sidebar** under "📖 Notes"
-- Click **Master TOC** to see all available notes
-- Use **breadcrumb navigation** (top) to track your location
-- **Search** works across all visible content
-
----
-
-## 🎯 Main Features
-
-### 1. Viewing & Searching
-| Action | How |
-|--------|-----|
-| **Read a note** | Click note name in sidebar |
-| **Search text** | Click search box, type query, use ↑↓ arrows |
-| **Find & highlight** | Use search with real-time highlighting |
-| **View TOC** | Click "Master TOC" in sidebar |
-
-### 2. Filtering & Sorting Tables
-| Action | How |
-|--------|-----|
-| **Filter table rows** | Click "Show/Hide" → Add rules → Apply |
-| **Sort table** | Click "Show/Hide" → Select column → Choose method → Apply |
-| **Reset table** | Click 🔄 Refresh button |
-| **Show fewer rows** | Use "Show" dropdown (5, 10, 25, 50, 100, All) |
-
-### 3. Exporting Data
-| Action | How |
-|--------|-----|
-| **Copy table** | Click 📋 Copy → Select format (Markdown/JSON/CSV/HTML/TSV) |
-| **Download PDF** | Click 📥 PDF button |
-| **Print note** | Press Ctrl+P (Cmd+P on Mac) |
-
-### 4. Theme & Display
-| Action | How |
-|--------|-----|
-| **Change theme** | Click 🌙/☀️ icon (top-right) |
-| **Adjust text size** | Use browser zoom (Ctrl/Cmd + ±) |
-| **Full screen** | Press F11 in browser |
-
----
-
-## ❓ Frequently Asked Questions
-
-### How do I add my own notes?
-Edit the \`datanoteU14.js\` file and add your content to the note structure. See README.md for detailed configuration.
-
-### Why can't I sort/filter?
-Make sure you clicked **"Show/Hide"** button first to reveal the filter panel. Some tables may be locked.
-
-### How do I search in multiple notes?
-The search works on the **currently displayed note**. To search across notes, you need to read through them individually or use your browser's find function (Ctrl+F).
-
-### Can I password-protect my notes?
-Yes! Add \`meta: { password: "yourPassword" }\` to a note configuration. See README.md for details.
-
-### How do I export filtered results?
-1. Apply your filters
-2. Click 📋 Copy
-3. Select format
-4. Only filtered rows are exported
-
-### Does this work offline?
-Yes! Open \`index.html\` locally in your browser. No internet needed.
-
-### Can I print tables cleanly?
-Yes! Press Ctrl+P to print. Filters and search bars automatically hide. Use "Save as PDF" for digital copies.
-
-### How do I reset a table to original state?
-Click the 🔄 **Refresh** button. It undoes all sorting, filtering, and column changes instantly.
-
----
-
-## ⚡ Common Tasks
-
-### Task: Find all Active Users
-\`\`\`
-1. Navigate to Users table
-2. Click "Show/Hide"
-3. Column: Status | Operator: equals | Value: Active
-4. Click "Apply"
-5. Result: Only active users shown
-\`\`\`
-
-### Task: Sort by Highest Sales
-\`\`\`
-1. Navigate to Sales table
-2. Click "Show/Hide"
-3. Sort by: Sales column | Method: Descending
-4. Click "Apply Sort"
-5. Result: Highest sales first
-\`\`\`
-
-### Task: Export 25 employees to Excel
-\`\`\`
-1. Go to Employee table
-2. Set "Show" to 25 entries
-3. Click 📋 Copy → Select "CSV"
-4. Paste into Excel
-5. Done!
-\`\`\`
-
-### Task: Find text in a note
-\`\`\`
-1. Click search box (top-right)
-2. Type your search term
-3. Use ↑↓ arrows to navigate matches
-4. Click X to close search
-\`\`\`
-
-### Task: Compare filtered results in Excel
-\`\`\`
-1. Apply filters to table
-2. Click 📋 Copy → JSON
-3. Use online JSON-to-CSV converter
-4. Paste into Excel
-5. Analyze data
-\`\`\`
-
----
-
-## 🔧 Troubleshooting
-
-### Problem: Search not working
-**Solution:** Make sure you typed in the search box and it has focus (cursor visible).
-
-### Problem: Filter shows no results
-**Solution:** 
-- Check if filter rules are too restrictive
-- Try clearing filters and applying simpler rules
-- Verify the search value matches actual data
-
-### Problem: Sort doesn't work
-**Solution:**
-- Make sure you selected a column
-- Click "Apply Sort" button
-- Check console for errors (F12)
-
-### Problem: Can't copy table
-**Solution:**
-- Some tables may be protected
-- Try a different format
-- Check browser console (F12) for errors
-
-### Problem: PDF download doesn't start
-**Solution:**
-- Check browser's download settings
-- Allow pop-ups for this site
-- Try a different browser
-
-### Problem: Theme not saving
-**Solution:**
-- Check if browser allows local storage
-- Disable privacy mode/incognito
-- Clear browser cache and try again
-
-### Problem: Mobile view looks broken
-**Solution:**
-- Try rotating device
-- Increase browser zoom slightly
-- Disable browser zoom and try again
-
----
-
-## 🎨 Keyboard Shortcuts
-
-| Shortcut | Action |
-|----------|--------|
-| \`/\` | Focus search box |
-| \`Escape\` | Clear search / Close modals |
-| \`Ctrl+P\` / \`Cmd+P\` | Print page |
-| \`Ctrl+Shift+D\` | Toggle theme |
-| \`Ctrl+F\` | Browser find (searches current page) |
-
----
-
-## 📞 Need More Help?
-
-- **Full Documentation**: See **README.md** for detailed guides
-- **Table Features**: Check README → Usage Guide → Advanced Filtering/Sorting
-- **Export Formats**: Check README → Table Export Formats
-- **Configuration**: Check README → Configuration section
-
----
-
-## 💡 Pro Tips
-
-✅ **Use Custom Functions** for advanced sorting (extract numbers, dates, etc.)
-
-✅ **Combine Filters** with AND/OR logic for complex queries
-
-✅ **Export Early** - Copy filtered/sorted data to external tools for analysis
-
-✅ **Use PDF Export** to share notes with others professionally
-
-✅ **Master TOC** saves time - see all notes at a glance
-
-✅ **Refresh Button** beats page reload - instant reset without losing position
-
----
-
-## 🚀 Performance Tips
-
-- **Large tables?** Use "Show" dropdown to display fewer rows at once
-- **Lots of notes?** Use search to quickly find specific content
-- **Multiple filters?** Start simple, then add complexity
-- **Export often** - Store important data externally as backup
-
----
-
-Last updated: January 2026`;
 window.helpMeta = { name: "Help", emoji: "❓", password: null, protection: "NO" };
-window.readmeContent = `# 📚 Markdown Notes Viewer\n\nWelcome to the Markdown Notes Viewer!\n\n## Features\n\n- Multi-level nested navigation\n- Password-protected notes\n- Combined views (U0, U01)\n- Public All Notes view\n- Advanced table filtering\n- Nepali/Devanagari search\n\n## Usage\n\nClick notes in the sidebar to view them.`;
+window.namasteMeta = { name: "Namaste", emoji: "🙏", password: null, protection: "NO" };
 window.readmeMeta = { name: "README", emoji: "📘", password: null, protection: "NO" };
 
 window.groupUMeta = { name: "JavaScript & React", emoji: "🟨", description: "Frontend docs" };
@@ -1072,7 +852,7 @@ const NepaliNormalizer = {
 // ========================================
 function discoverNotes() {
     const notePattern = /^note([A-Z])(\d)(\d)Content$/;
-    if (window.readmeContent) AppState.hasReadme = true;
+    AppState.hasReadme = true; // Always enable README, Help, and Namaste navigation
     for (const key of Object.keys(window)) {
         if (key.match(/^group([A-Z])Meta$/)) AppState.groupMeta.set(key.match(/^group([A-Z])Meta$/)[1], window[key]);
         if (key.match(/^unit([A-Z])(\d)Meta$/)) { const m = key.match(/^unit([A-Z])(\d)Meta$/); AppState.unitMeta.set(`${m[1]}${m[2]}`, window[key]); }
@@ -1139,10 +919,10 @@ function fallbackRender(content) {
 // Navigation
 // ========================================
 function buildNavigation() {
-    const nav = document.getElementById('navContainer'), help = document.getElementById('helpItem'), readme = document.getElementById('readmeItem'),
+    const nav = document.getElementById('navContainer'), help = document.getElementById('helpItem'), namaste = document.getElementById('namasteItem'), readme = document.getElementById('readmeItem'),
           publicAll = document.getElementById('publicAllItem'), masterToc = document.getElementById('masterTocContainer');
     nav.innerHTML = '';
-    if (AppState.hasReadme) { help.style.display = 'flex'; nav.appendChild(help); readme.style.display = 'flex'; nav.appendChild(readme); }
+    if (AppState.hasReadme) { namaste.style.display = 'flex'; nav.appendChild(namaste); help.style.display = 'flex'; nav.appendChild(help); readme.style.display = 'flex'; nav.appendChild(readme); }
     nav.appendChild(publicAll);
     nav.appendChild(masterToc);
     for (const group of Array.from(AppState.groups.keys()).sort()) nav.appendChild(createGroupDropdown(group));
@@ -1225,10 +1005,39 @@ async function loadHelp() {
     AppState.currentNote = 'help';
     updateBreadcrumb({ meta: window.helpMeta });
     document.getElementById('contentArea').innerHTML = '<div class="loading-container"><div class="loading-spinner"></div><div>Loading...</div></div>';
-    const rendered = await renderMarkdown(window.helpContent);
-    displayRenderedContent({ meta: window.helpMeta }, rendered);
+    try {
+        const response = await fetch('Help.md');
+        const helpContent = await response.text();
+        const rendered = await renderMarkdown(helpContent);
+        displayRenderedContent({ meta: window.helpMeta }, rendered);
+    } catch (error) {
+        console.error('Error loading Help.md:', error);
+        const errorContent = '# Help - Error\n\nSorry, the Help documentation could not be loaded. Please check that Help.md exists in the same directory as this application.';
+        const rendered = await renderMarkdown(errorContent);
+        displayRenderedContent({ meta: window.helpMeta }, rendered);
+    }
     document.querySelectorAll('.nav-item,.special-nav-item').forEach(el => el.classList.remove('active'));
     document.getElementById('helpItem').classList.add('active');
+}
+
+async function loadNamaste() {
+    if (!AppState.hasReadme) return;
+    AppState.currentNote = 'namaste';
+    updateBreadcrumb({ meta: window.namasteMeta });
+    document.getElementById('contentArea').innerHTML = '<div class="loading-container"><div class="loading-spinner"></div><div>Loading...</div></div>';
+    try {
+        const response = await fetch('NAMASTE.md');
+        const namasteContent = await response.text();
+        const rendered = await renderMarkdown(namasteContent);
+        displayRenderedContent({ meta: window.namasteMeta }, rendered);
+    } catch (error) {
+        console.error('Error loading NAMASTE.md:', error);
+        const errorContent = '# Namaste - Error\n\nSorry, the welcome message could not be loaded. Please check that NAMASTE.md exists in the same directory as this application.';
+        const rendered = await renderMarkdown(errorContent);
+        displayRenderedContent({ meta: window.namasteMeta }, rendered);
+    }
+    document.querySelectorAll('.nav-item,.special-nav-item').forEach(el => el.classList.remove('active'));
+    document.getElementById('namasteItem').classList.add('active');
 }
 
 async function loadReadme() {
@@ -1236,8 +1045,17 @@ async function loadReadme() {
     AppState.currentNote = 'readme';
     updateBreadcrumb({ meta: window.readmeMeta });
     document.getElementById('contentArea').innerHTML = '<div class="loading-container"><div class="loading-spinner"></div><div>Loading...</div></div>';
-    const rendered = await renderMarkdown(window.readmeContent);
-    displayRenderedContent({ meta: window.readmeMeta }, rendered);
+    try {
+        const response = await fetch('README.md');
+        const readmeContent = await response.text();
+        const rendered = await renderMarkdown(readmeContent);
+        displayRenderedContent({ meta: window.readmeMeta }, rendered);
+    } catch (error) {
+        console.error('Error loading README.md:', error);
+        const errorContent = '# README - Error\n\nSorry, the README documentation could not be loaded. Please check that README.md exists in the same directory as this application.';
+        const rendered = await renderMarkdown(errorContent);
+        displayRenderedContent({ meta: window.readmeMeta }, rendered);
+    }
     document.querySelectorAll('.nav-item,.special-nav-item').forEach(el => el.classList.remove('active'));
     document.getElementById('readmeItem').classList.add('active');
 }
@@ -1543,7 +1361,7 @@ function setupTableFilters() {
         const wrapper = document.createElement('div'); wrapper.className = 'table-filter-wrapper'; wrapper.id = `filter-${idx}`;
         const columnSelectorId = `col-selector-${idx}`;
         const columnDropdownId = `col-dropdown-${idx}`;
-        wrapper.innerHTML = `<div class="table-filter-header"><span class="table-filter-title">🔍 Filter Table</span><div class="entries-selector-wrapper"><label class="entries-label">Show</label><select class="entries-dropdown" id="entries-${idx}" data-idx="${idx}"><option value="5">5</option><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option><option value="all">All</option></select><label class="entries-label">entries</label></div><div class="sort-controls-wrapper"><label class="sort-label">Sort by</label><select class="sort-select" id="sort-col-${idx}" data-idx="${idx}"><option value="">Select Column</option>${headers.map((h, i) => `<option value="${i}">${h}</option>`).join('')}</select><select class="sort-method-select" id="sort-method-${idx}" data-idx="${idx}"><option value="asc">Ascending</option><option value="desc">Descending</option><option value="alpha">Alphabetical</option><option value="func">Custom Function</option></select><input type="text" class="sort-function-input" id="sort-func-input-${idx}" placeholder="e.g., CAST(col AS UNSIGNED)" data-idx="${idx}"><button class="sort-apply-btn" id="sort-apply-${idx}" data-idx="${idx}">Apply Sort</button></div><button class="table-filter-toggle" data-idx="${idx}">Show/Hide</button><div class="refresh-ribbon"><button class="filter-btn filter-refresh-btn" data-idx="${idx}" title="Reset table to default state">🔄 Refresh</button></div></div><div class="table-filter-rules" id="rules-${idx}" style="display:none;"></div><div class="filter-actions" id="actions-${idx}" style="display:none;"><button class="filter-btn filter-add-btn" data-idx="${idx}">+ Add Rule</button><button class="filter-btn filter-apply-btn" data-idx="${idx}">Apply</button><button class="filter-btn filter-clear-btn" data-idx="${idx}">Clear</button></div><div class="filter-results" id="results-${idx}"></div><div class="table-copy-wrapper" style="display: flex; gap: 8px; align-items: center;"><div class="column-selector-wrapper"><button class="column-selector-btn" id="${columnSelectorId}" title="Select columns to copy">📊 Columns</button><div class="column-selector-dropdown" id="${columnDropdownId}"><div class="column-selector-header"><label class="column-select-all"><input type="checkbox" class="select-all-cols" data-idx="${idx}" checked><span>All Columns</span></label></div><div class="column-items-list" id="cols-list-${idx}"></div><div class="column-selector-footer"><span id="col-count-${idx}">0/0 selected</span></div></div></div><button class="copy-table-btn" data-table-idx="${idx}" title="Copy table in different formats">📋 Copy</button><div class="copy-formats-dropdown" id="dropdown-${idx}"><div class="copy-format-item" data-format="markdown">Markdown</div><div class="copy-format-item" data-format="json">JSON</div><div class="copy-format-item" data-format="html">HTML</div><div class="copy-format-item" data-format="csv">CSV</div><div class="copy-format-item" data-format="tsv">TSV</div></div></div>`;
+        wrapper.innerHTML = `<div class="table-filter-header"><span class="table-filter-title">🔍 Filter Table</span><div class="entries-selector-wrapper"><label class="entries-label">Show</label><select class="entries-dropdown" id="entries-${idx}" data-idx="${idx}"><option value="5">5</option><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option><option value="all">All</option></select><label class="entries-label">entries</label></div><div class="sort-controls-wrapper"><label class="sort-label">Sort by</label><select class="sort-select" id="sort-col-${idx}" data-idx="${idx}"><option value="">Select Column</option>${headers.map((h, i) => `<option value="${i}">${h}</option>`).join('')}</select><select class="sort-method-select" id="sort-method-${idx}" data-idx="${idx}"><option value="asc">Ascending</option><option value="desc">Descending</option><option value="alpha">Alphabetical</option><option value="func">Custom Function</option></select><input type="text" class="sort-function-input" id="sort-func-input-${idx}" placeholder="e.g., CAST(col AS UNSIGNED)" data-idx="${idx}"><button class="sort-apply-btn" id="sort-apply-${idx}" data-idx="${idx}">Apply Sort</button></div><button class="table-filter-toggle" data-idx="${idx}">Show/Hide</button><div class="refresh-ribbon"><button class="filter-btn filter-refresh-btn" data-idx="${idx}" title="Reset table to default state">🔄 RESET</button></div></div><div class="table-filter-rules" id="rules-${idx}" style="display:none;"></div><div class="filter-actions" id="actions-${idx}" style="display:none;"><button class="filter-btn filter-add-btn" data-idx="${idx}">+ Add Rule</button><button class="filter-btn filter-apply-btn" data-idx="${idx}">Apply</button><button class="filter-btn filter-clear-btn" data-idx="${idx}">Clear</button></div><div class="filter-results" id="results-${idx}"></div><div class="table-copy-wrapper" style="display: flex; gap: 8px; align-items: center;"><div class="column-selector-wrapper"><button class="column-selector-btn" id="${columnSelectorId}" title="Select columns to copy">📊 Columns</button><div class="column-selector-dropdown" id="${columnDropdownId}"><div class="column-selector-header"><label class="column-select-all"><input type="checkbox" class="select-all-cols" data-idx="${idx}" checked><span>All Columns</span></label></div><div class="column-items-list" id="cols-list-${idx}"></div><div class="column-selector-footer"><span id="col-count-${idx}">0/0 selected</span></div></div></div><button class="copy-table-btn" data-table-idx="${idx}" title="Copy table in different formats">📋 Copy</button><div class="copy-formats-dropdown" id="dropdown-${idx}"><div class="copy-format-item" data-format="markdown">Markdown</div><div class="copy-format-item" data-format="json">JSON</div><div class="copy-format-item" data-format="html">HTML</div><div class="copy-format-item" data-format="csv">CSV</div><div class="copy-format-item" data-format="tsv">TSV</div></div></div>`;
         table.parentNode.insertBefore(wrapper, table);
         wrapper.querySelector('.table-filter-toggle').addEventListener('click', () => {
             const rules = document.getElementById(`rules-${idx}`), actions = document.getElementById(`actions-${idx}`);
@@ -2324,6 +2142,7 @@ function setupBackToTop() {
 function setupEventListeners() {
     document.getElementById('masterTocHeader').addEventListener('click', () => document.getElementById('masterTocContainer').classList.toggle('open'));
     document.getElementById('helpItem').addEventListener('click', loadHelp);
+    document.getElementById('namasteItem').addEventListener('click', loadNamaste);
     document.getElementById('readmeItem').addEventListener('click', loadReadme);
     document.getElementById('publicAllItem').addEventListener('click', loadPublicAllNotes);
     
@@ -2487,6 +2306,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 document.addEventListener('DOMContentLoaded', init);
     </script>
-      <script src="datanoteU14.js"></script>
+      <script src="datanoteU14.js"></script>      
 </body>
 </html>
