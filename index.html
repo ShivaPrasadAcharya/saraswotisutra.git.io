@@ -179,7 +179,7 @@
         .table-filter-wrapper { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 12px; margin-bottom: 8px; }
         .table-filter-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
         .table-filter-title { font-family: var(--font-mono); font-size: 11px; font-weight: 600; color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 1px; }
-        .table-filter-toggle { background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 4px 8px; font-family: var(--font-mono); font-size: 10px; color: var(--text-secondary); cursor: pointer; }
+        .table-filter-toggle { background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 4px 8px; font-family: var(--font-mono); font-size: 10px; color: var(--text-secondary); cursor: pointer; min-width: 30px; text-align: center; }
         .table-filter-toggle:hover { background: var(--bg-hover); color: var(--text-primary); }
         .entries-selector-wrapper { display: flex; align-items: center; gap: 6px; }
         .entries-label { font-family: var(--font-mono); font-size: 10px; color: var(--text-secondary); }
@@ -383,6 +383,28 @@
             .media-gallery { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
             .media-item-title { font-size: 14px; }
             .media-item-caption { font-size: 12px; }
+            
+            /* Filter ribbons collapse on mobile */
+            .table-filter-wrapper .table-filter-rules,
+            .table-filter-wrapper .filter-actions,
+            .table-filter-wrapper .filter-results,
+            .table-filter-wrapper .table-copy-wrapper,
+            .table-filter-wrapper .refresh-ribbon {
+                display: none;
+            }
+            .table-filter-wrapper.mobile-expanded .table-filter-rules,
+            .table-filter-wrapper.mobile-expanded .filter-actions,
+            .table-filter-wrapper.mobile-expanded .filter-results,
+            .table-filter-wrapper.mobile-expanded .table-copy-wrapper,
+            .table-filter-wrapper.mobile-expanded .refresh-ribbon {
+                display: block;
+            }
+            .table-filter-toggle::before {
+                content: "> ";
+            }
+            .table-filter-wrapper.mobile-expanded .table-filter-toggle::before {
+                content: "< ";
+            }
         }
         @media (max-width: 600px) {
             /* Extra small screens */
@@ -1366,14 +1388,18 @@ function setupTableFilters() {
         const wrapper = document.createElement('div'); wrapper.className = 'table-filter-wrapper'; wrapper.id = `filter-${idx}`;
         const columnSelectorId = `col-selector-${idx}`;
         const columnDropdownId = `col-dropdown-${idx}`;
-        wrapper.innerHTML = `<div class="table-filter-header"><span class="table-filter-title">🔍 Filter Table</span><div class="entries-selector-wrapper"><label class="entries-label">Show</label><select class="entries-dropdown" id="entries-${idx}" data-idx="${idx}"><option value="5">5</option><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option><option value="all">All</option></select><label class="entries-label">entries</label></div><div class="sort-controls-wrapper"><label class="sort-label">Sort by</label><select class="sort-select" id="sort-col-${idx}" data-idx="${idx}"><option value="">Select Column</option>${headers.map((h, i) => `<option value="${i}">${h}</option>`).join('')}</select><select class="sort-method-select" id="sort-method-${idx}" data-idx="${idx}"><option value="asc">Ascending</option><option value="desc">Descending</option><option value="alpha">Alphabetical</option><option value="func">Custom Function</option></select><input type="text" class="sort-function-input" id="sort-func-input-${idx}" placeholder="e.g., CAST(col AS UNSIGNED)" data-idx="${idx}"><button class="sort-apply-btn" id="sort-apply-${idx}" data-idx="${idx}">Apply Sort</button></div><button class="table-filter-toggle" data-idx="${idx}">Show/Hide</button><div class="refresh-ribbon"><button class="filter-btn filter-refresh-btn" data-idx="${idx}" title="Reset table to default state">🔄 RESET</button></div></div><div class="table-filter-rules" id="rules-${idx}" style="display:none;"></div><div class="filter-actions" id="actions-${idx}" style="display:none;"><button class="filter-btn filter-add-btn" data-idx="${idx}">+ Add Rule</button><button class="filter-btn filter-apply-btn" data-idx="${idx}">Apply</button><button class="filter-btn filter-clear-btn" data-idx="${idx}">Clear</button></div><div class="filter-results" id="results-${idx}"></div><div class="table-copy-wrapper" style="display: flex; gap: 8px; align-items: center;"><div class="column-selector-wrapper"><button class="column-selector-btn" id="${columnSelectorId}" title="Select columns to copy">📊 Columns</button><div class="column-selector-dropdown" id="${columnDropdownId}"><div class="column-selector-header"><label class="column-select-all"><input type="checkbox" class="select-all-cols" data-idx="${idx}" checked><span>All Columns</span></label></div><div class="column-items-list" id="cols-list-${idx}"></div><div class="column-selector-footer"><span id="col-count-${idx}">0/0 selected</span></div></div></div><button class="copy-table-btn" data-table-idx="${idx}" title="Copy table in different formats">📋 Copy</button><div class="copy-formats-dropdown" id="dropdown-${idx}"><div class="copy-format-item" data-format="markdown">Markdown</div><div class="copy-format-item" data-format="json">JSON</div><div class="copy-format-item" data-format="html">HTML</div><div class="copy-format-item" data-format="csv">CSV</div><div class="copy-format-item" data-format="tsv">TSV</div></div></div>`;
+        wrapper.innerHTML = `<div class="table-filter-header"><span class="table-filter-title">🔍 Filter Table</span><div class="entries-selector-wrapper"><label class="entries-label">Show</label><select class="entries-dropdown" id="entries-${idx}" data-idx="${idx}"><option value="5">5</option><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option><option value="all">All</option></select><label class="entries-label">entries</label></div><div class="sort-controls-wrapper"><label class="sort-label">Sort by</label><select class="sort-select" id="sort-col-${idx}" data-idx="${idx}"><option value="">Select Column</option>${headers.map((h, i) => `<option value="${i}">${h}</option>`).join('')}</select><select class="sort-method-select" id="sort-method-${idx}" data-idx="${idx}"><option value="asc">Ascending</option><option value="desc">Descending</option><option value="alpha">Alphabetical</option><option value="func">Custom Function</option></select><input type="text" class="sort-function-input" id="sort-func-input-${idx}" placeholder="e.g., CAST(col AS UNSIGNED)" data-idx="${idx}"><button class="sort-apply-btn" id="sort-apply-${idx}" data-idx="${idx}">Apply Sort</button></div><button class="table-filter-toggle" data-idx="${idx}"></button><div class="refresh-ribbon"><button class="filter-btn filter-refresh-btn" data-idx="${idx}" title="Reset table to default state">🔄 RESET</button></div></div><div class="table-filter-rules" id="rules-${idx}" style="display:none;"></div><div class="filter-actions" id="actions-${idx}" style="display:none;"><button class="filter-btn filter-add-btn" data-idx="${idx}">+ Add Rule</button><button class="filter-btn filter-apply-btn" data-idx="${idx}">Apply</button><button class="filter-btn filter-clear-btn" data-idx="${idx}">Clear</button></div><div class="filter-results" id="results-${idx}"></div><div class="table-copy-wrapper" style="display: flex; gap: 8px; align-items: center;"><div class="column-selector-wrapper"><button class="column-selector-btn" id="${columnSelectorId}" title="Select columns to copy">📊 Columns</button><div class="column-selector-dropdown" id="${columnDropdownId}"><div class="column-selector-header"><label class="column-select-all"><input type="checkbox" class="select-all-cols" data-idx="${idx}" checked><span>All Columns</span></label></div><div class="column-items-list" id="cols-list-${idx}"></div><div class="column-selector-footer"><span id="col-count-${idx}">0/0 selected</span></div></div></div><button class="copy-table-btn" data-table-idx="${idx}" title="Copy table in different formats">📋 Copy</button><div class="copy-formats-dropdown" id="dropdown-${idx}"><div class="copy-format-item" data-format="markdown">Markdown</div><div class="copy-format-item" data-format="json">JSON</div><div class="copy-format-item" data-format="html">HTML</div><div class="copy-format-item" data-format="csv">CSV</div><div class="copy-format-item" data-format="tsv">TSV</div></div></div>`;
         table.parentNode.insertBefore(wrapper, table);
         wrapper.querySelector('.table-filter-toggle').addEventListener('click', () => {
-            const rules = document.getElementById(`rules-${idx}`), actions = document.getElementById(`actions-${idx}`);
-            const show = rules.style.display === 'none';
-            rules.style.display = show ? 'flex' : 'none';
-            actions.style.display = show ? 'flex' : 'none';
-            if (show && document.getElementById(`rules-${idx}`).children.length === 0) addFilterRule(idx, headers);
+            if (window.innerWidth <= 768) {
+                wrapper.classList.toggle('mobile-expanded');
+            } else {
+                const rules = document.getElementById(`rules-${idx}`), actions = document.getElementById(`actions-${idx}`);
+                const show = rules.style.display === 'none';
+                rules.style.display = show ? 'flex' : 'none';
+                actions.style.display = show ? 'flex' : 'none';
+                if (show && document.getElementById(`rules-${idx}`).children.length === 0) addFilterRule(idx, headers);
+            }
         });
         wrapper.querySelector('.filter-add-btn').addEventListener('click', () => addFilterRule(idx, headers));
         wrapper.querySelector('.filter-apply-btn').addEventListener('click', () => applyTableFilter(idx, table, headers));
