@@ -601,8 +601,7 @@ window.noteU12Meta = { name: "JS Advanced", emoji: "📗", password: null, prote
 window.noteU13Content = `# Security Patterns (Locked)\n\n## Auth Table\n\n| Method | Level |\n|--------|-------|\n| JWT | High |\n| OAuth | Very High |`;
 window.noteU13Meta = { name: "Security", emoji: "🔒", password: null, protection: "NO" };
 
-window.noteU21Content = `# React Fundamentals\n\n## Components\nBuilding blocks of React.\n\n## Comparison\n\n| Feature | Class | Functional |\n|---------|-------|------------|\n| State | this.state | useState |\n| Lifecycle | methods | useEffect |\n\n## Resources\n\n| Resource | Link | Type |\n|----------|------|------|\n| Official Docs | https://react.dev | External |\n| Tutorial | https://react.dev/learn | External |\n| Community | https://github.com/facebook/react | Repository |\n| Ganesh Icon | IMAGES/ganesh.jpg | Image |`;
-window.noteU21Meta = { name: "React Basics", emoji: "⚛️", password: null, protection: "NO" };
+
 
 window.noteU22Content = `# State Management\n\n## Solutions\n\n| Library | Size | Learning |\n|---------|------|----------|\n| Redux | Large | Steep |\n| MobX | Medium | Medium |\n| Zustand | Small | Easy |\n\n## Gallery\n\n| Title | Caption | Subcaption | URL |\n|-------|---------|------------|-----|\n| React Logo | Official React brand | Modern UI library | https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1024px-React-icon.svg.png |\n| Vue Framework | Progressive framework | Alternative to React | https://vuejs.org/images/logo.png |\n| Angular Icon | Google framework | Complete solution | https://angular.io/assets/images/logos/angular/angular.svg |`;
 window.noteU22Meta = { name: "State Mgmt", emoji: "🔄", password: null, protection: "NO" };
@@ -910,11 +909,91 @@ async function initPyodide() {
 async function renderMarkdown(content) {
     if (AppState.pyodide) {
         try {
-            AppState.pyodide.globals.set('markdown_input', content);
+            // Process JSON blocks first
+            const processedContent = convertJsonBlocksToTables(content);
+            AppState.pyodide.globals.set('markdown_input', processedContent);
             return (await AppState.pyodide.runPythonAsync(`convert_markdown(markdown_input)`)).toJs();
-        } catch (e) { return fallbackRender(content); }
+        } catch (e) { return fallbackRender(convertJsonBlocksToTables(content)); }
     }
-    return fallbackRender(content);
+    return fallbackRender(convertJsonBlocksToTables(content));
+}
+
+function convertJsonBlocksToTables(content) {
+    // Match JSON blocks (arrays or objects)
+    const jsonBlockRegex = /(\[[\s\S]*?\n\]|\{[\s\S]*?\n\})/g;
+    
+    return content.replace(jsonBlockRegex, (match) => {
+        try {
+            const trimmedMatch = match.trim();
+            // Check if it's a valid JSON
+            const parsed = JSON.parse(trimmedMatch);
+            
+            // Convert array of objects to markdown table
+            if (Array.isArray(parsed) && parsed.length > 0 && typeof parsed[0] === 'object' && parsed[0] !== null) {
+                return jsonArrayToMarkdownTable(parsed);
+            }
+            // Convert object to markdown table
+            else if (typeof parsed === 'object' && parsed !== null && !Array.isArray(parsed)) {
+                return jsonObjectToMarkdownTable(parsed);
+            }
+        } catch (e) {
+            // Not valid JSON or not a structure we convert, return as-is
+        }
+        return match;
+    });
+}
+
+function jsonArrayToMarkdownTable(arr) {
+    if (arr.length === 0) return '';
+    
+    // Get all unique keys from all objects in the array
+    const allKeys = new Set();
+    arr.forEach(item => {
+        if (typeof item === 'object' && item !== null) {
+            Object.keys(item).forEach(key => allKeys.add(key));
+        }
+    });
+    
+    if (allKeys.size === 0) return '';
+    
+    const headers = Array.from(allKeys);
+    
+    // Build markdown table
+    let table = '| ' + headers.join(' | ') + ' |\n';
+    table += '|' + headers.map(() => '---|').join('') + '\n';
+    
+    arr.forEach(item => {
+        if (typeof item === 'object' && item !== null) {
+            const row = headers.map(header => {
+                const value = item[header];
+                if (value === null || value === undefined) return '';
+                if (typeof value === 'string') return value.replace(/\|/g, '\\|').replace(/\n/g, ' ');
+                return String(value).replace(/\|/g, '\\|').replace(/\n/g, ' ');
+            });
+            table += '| ' + row.join(' | ') + ' |\n';
+        }
+    });
+    
+    return table;
+}
+
+function jsonObjectToMarkdownTable(obj) {
+    // Convert single object to a two-column table (key-value pairs)
+    if (typeof obj !== 'object' || obj === null || Array.isArray(obj)) return '';
+    
+    const keys = Object.keys(obj);
+    if (keys.length === 0) return '';
+    
+    let table = '| Key | Value |\n';
+    table += '|---|---|\n';
+    
+    keys.forEach(key => {
+        const value = obj[key];
+        const displayValue = value === null || value === undefined ? '' : String(value).replace(/\|/g, '\\|').replace(/\n/g, ' ');
+        table += `| ${key} | ${displayValue} |\n`;
+    });
+    
+    return table;
 }
 
 function fallbackRender(content) {
@@ -2352,5 +2431,7 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('DOMContentLoaded', init);
     </script>
       <script src="datanoteU14.js"></script>      
+      <script src="datanoteU15.js"></script>      
+      <script src="datanoteU21.js"></script>      
 </body>
 </html>
