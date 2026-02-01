@@ -599,13 +599,13 @@ window.noteU12Content = `# Advanced JavaScript\n\n## Closures\nClosures capture 
 window.noteU12Meta = { name: "JS Advanced", emoji: "📗", password: null, protection: "YES" };
 
 window.noteU13Content = `# Security Patterns (Locked)\n\n## Auth Table\n\n| Method | Level |\n|--------|-------|\n| JWT | High |\n| OAuth | Very High |`;
-window.noteU13Meta = { name: "Security", emoji: "🔒", password: "secret123", protection: "YES" };
+window.noteU13Meta = { name: "Security", emoji: "🔒", password: null, protection: "NO" };
 
-window.noteU21Content = `# React Fundamentals\n\n## Components\nBuilding blocks of React.\n\n## Comparison\n\n| Feature | Class | Functional |\n|---------|-------|------------|\n| State | this.state | useState |\n| Lifecycle | methods | useEffect |\n\n## Resources\n\n| Resource | Link | Type |\n|----------|------|------|\n| Official Docs | https://react.dev | External |\n| Tutorial | https://react.dev/learn | External |\n| Community | https://github.com/facebook/react | Repository |`;
-window.noteU21Meta = { name: "React Basics", emoji: "⚛️", password: null, protection: "YES" };
+window.noteU21Content = `# React Fundamentals\n\n## Components\nBuilding blocks of React.\n\n## Comparison\n\n| Feature | Class | Functional |\n|---------|-------|------------|\n| State | this.state | useState |\n| Lifecycle | methods | useEffect |\n\n## Resources\n\n| Resource | Link | Type |\n|----------|------|------|\n| Official Docs | https://react.dev | External |\n| Tutorial | https://react.dev/learn | External |\n| Community | https://github.com/facebook/react | Repository |\n| Ganesh Icon | IMAGES/ganesh.jpg | Image |`;
+window.noteU21Meta = { name: "React Basics", emoji: "⚛️", password: null, protection: "NO" };
 
 window.noteU22Content = `# State Management\n\n## Solutions\n\n| Library | Size | Learning |\n|---------|------|----------|\n| Redux | Large | Steep |\n| MobX | Medium | Medium |\n| Zustand | Small | Easy |\n\n## Gallery\n\n| Title | Caption | Subcaption | URL |\n|-------|---------|------------|-----|\n| React Logo | Official React brand | Modern UI library | https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1024px-React-icon.svg.png |\n| Vue Framework | Progressive framework | Alternative to React | https://vuejs.org/images/logo.png |\n| Angular Icon | Google framework | Complete solution | https://angular.io/assets/images/logos/angular/angular.svg |`;
-window.noteU22Meta = { name: "State Mgmt", emoji: "🔄", password: "123", protection: "YES" };
+window.noteU22Meta = { name: "State Mgmt", emoji: "🔄", password: null, protection: "NO" };
 
 window.noteV11Content = `# Python Basics\n\n## Comparison\n\n| Feature | Python | Java |\n|---------|--------|------|\n| Typing | Dynamic | Static |\n| Syntax | Clean | Verbose |`;
 window.noteV11Meta = { name: "Python Intro", emoji: "🐍", password: null, protection: "NO" };
@@ -614,7 +614,7 @@ window.noteV12Content = `# Python OOP\n\n## Concepts\n\n| Concept | Description 
 window.noteV12Meta = { name: "Python OOP", emoji: "🎯", password: null, protection: "NO" };
 
 window.noteV13Content = `# API Keys (Locked)\n\n## Keys\n\n| Env | Level |\n|-----|-------|\n| Prod | Full |`;
-window.noteV13Meta = { name: "API Keys", emoji: "🔐", password: "123", protection: "YES" };
+window.noteV13Meta = { name: "API Keys", emoji: "🔐", password: null, protection: "NO" };
 
 window.noteV21Content = `# Data Science\n\n## Libraries\n\n| Library | Purpose | Performance |\n|---------|---------|-------------|\n| NumPy | Arrays | Excellent |\n| Pandas | DataFrames | Good |\n| Matplotlib | Plotting | Good |`;
 window.noteV21Meta = { name: "Data Science", emoji: "📊", password: null, protection: "NO" };
@@ -805,7 +805,7 @@ const TruncationManager = {
     updateUI() {
         const btn = document.getElementById('truncationToggle');
         if (AppState.truncateTableCells) {
-            btn.textContent = '📋 Full Text';
+            btn.textContent = '📋 Full Table';
             btn.classList.remove('active');
         } else {
             btn.textContent = '📋 Truncated';
@@ -1272,13 +1272,25 @@ function enforceProtection(area, isProtected) {
 // Table Filtering & Media Gallery
 // ========================================
 function detectMediaTable(table) {
+    // Only treat a table as a media gallery when media-like values
+    // appear in a column that is explicitly a media column (e.g. url, media, image, src, thumbnail, file, path)
     const mediaExtensions = /\.(jpg|jpeg|png|gif|nef|mp4|mp3|mov|webm|webp)(\?|$|#)/i;
+    const allowedMediaHeaders = new Set(['url', 'media', 'image', 'src', 'thumbnail', 'file', 'path']);
+    const headers = Array.from(table.querySelectorAll('th')).map(th => th.textContent.trim().toLowerCase());
     const rows = table.querySelectorAll('tbody tr, tr:not(:first-child)');
     if (rows.length === 0) return false;
+
     for (const row of rows) {
         const cells = row.querySelectorAll('td');
-        for (const cell of cells) {
-            if (mediaExtensions.test(cell.textContent.trim())) return true;
+        for (let i = 0; i < cells.length; i++) {
+            const cell = cells[i];
+            const cellText = cell.textContent.trim();
+            if (!cellText) continue;
+            // Only consider this cell a media indicator if its column header matches allowed media headers
+            const header = headers[i] || '';
+            if (allowedMediaHeaders.has(header) && mediaExtensions.test(cellText)) {
+                return true;
+            }
         }
     }
     return false;
@@ -1440,11 +1452,21 @@ function setupTableFilters() {
 }
 
 function processTableLinks(table) {
-    const urlRegex = /^(https?:\/\/[^\s]+)$/i;
+    // Match both HTTP URLs and relative file paths (images, docs, pdfs, etc.)
+    const urlRegex = /^(https?:\/\/[^\s]+|[A-Za-z0-9_./\-]+\.(jpg|jpeg|png|gif|pdf|docx|pptx|ppt|doc|xls|xlsx|txt|zip|rar|csv|mp4|webm|mp3|wav|svg)?)$/i;
     table.querySelectorAll('td, th').forEach(cell => {
+        // If the cell already contains an anchor, ensure it opens in a new tab
+        const existingA = cell.querySelector('a');
+        if (existingA) {
+            existingA.setAttribute('target', '_blank');
+            existingA.setAttribute('rel', 'noopener noreferrer');
+            return;
+        }
+
         const text = cell.textContent.trim();
         if (urlRegex.test(text)) {
             const truncated = truncateUrl(text);
+            // Always open table links in a new tab
             cell.innerHTML = `<a href="${text}" target="_blank" rel="noopener noreferrer" title="${text}">${truncated}</a>`;
         }
     });
