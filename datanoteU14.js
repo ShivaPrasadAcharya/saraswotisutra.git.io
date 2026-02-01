@@ -6905,4 +6905,4 @@ window.noteU14Content = `|   Licence No  |  Name                                
 
 
 `;
-window.noteU14Meta = { name: "Security ok", emoji: "🔒", password: null, protection:"YES"};
+window.noteU14Meta = { name: "Security ok", emoji: "🔒", password: null, protection:"NO"};
