@@ -1,4 +1,4 @@
-window.noteU21Content = `# अधिवक्ताहरु (८००० देखि)\n
+window.noteU16Content = `# अधिवक्ताहरु (८००० देखि)\n
 [
   {
     "Licence No": "8127",
@@ -104228,4 +104228,4 @@ window.noteU21Content = `# अधिवक्ताहरु (८००० द�
 
 
 `;
-window.noteU21Meta = { name: "Advocates (>8000)", emoji: "⚛️", password: null, protection: "NO" };
+window.noteU16Meta = { name: "Advocates (>8000)", emoji: "⚛️", password: null, protection: "NO" };
