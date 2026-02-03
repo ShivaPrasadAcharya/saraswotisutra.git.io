@@ -717,7 +717,7 @@ const AppState = {
     unitMeta: new Map(), combinedMeta: new Map(), currentNote: null,
     unlockedNotes: new Set(), searchMatches: [], currentMatchIndex: -1, currentProtected: false,
     originalContent: '', hasReadme: false, combinedViewHeadingMap: {},
-    headingIdMap: {}, headingCounter: 0, truncateTableCells: true, allTableCells: []
+    headingIdMap: {}, headingCounter: 0, truncateTableCells: true, allTableCells: [], hasLargeTable: false
 };
 
 // ========================================
@@ -1786,6 +1786,22 @@ function setupTableFilters() {
             if (!wrapper.contains(e.target)) dropdown.classList.remove('open');
         });
     });
+    
+    // Check for large tables (>100 rows)
+    AppState.hasLargeTable = Array.from(body.querySelectorAll('table')).some(table => {
+        const dataRows = Array.from(table.querySelectorAll('tbody tr, tr:not(:first-child)'));
+        return dataRows.length > 100;
+    });
+    
+    // Update search icon based on large table presence
+    const searchIcon = document.querySelector('.search-icon');
+    if (AppState.hasLargeTable) {
+        searchIcon.style.pointerEvents = 'auto';
+        searchIcon.style.cursor = 'pointer';
+    } else {
+        searchIcon.style.pointerEvents = 'none';
+        searchIcon.style.cursor = 'default';
+    }
 }
 
 function processTableLinks(table) {
@@ -2593,7 +2609,16 @@ function setupEventListeners() {
     // Search with optimized debouncing
     let searchTimeout;
     let lastSearchQuery = '';
+    let delayedSearchTimeout;
     document.getElementById('searchInput').addEventListener('input', e => { 
+        if (AppState.hasLargeTable) {
+            clearTimeout(delayedSearchTimeout);
+            delayedSearchTimeout = setTimeout(() => {
+                const query = e.target.value;
+                performSearch(query);
+            }, 4000); // Search after 4 seconds of inactivity (approx. 4 cursor blinks)
+            return;
+        }
         clearTimeout(searchTimeout);
         const query = e.target.value;
         
@@ -2606,6 +2631,20 @@ function setupEventListeners() {
             performSearch(query);
         }, 300);
     }, { passive: true });
+    
+    // For large tables, search on Enter or click icon
+    const searchIcon = document.querySelector('.search-icon');
+    searchIcon.addEventListener('click', () => {
+        if (!AppState.hasLargeTable) return;
+        clearTimeout(delayedSearchTimeout);
+        const query = document.getElementById('searchInput').value;
+        performSearch(query);
+    });
+    // Make icon clickable only for large tables
+    if (AppState.hasLargeTable) {
+        searchIcon.style.pointerEvents = 'auto';
+        searchIcon.style.cursor = 'pointer';
+    }
     document.getElementById('searchPrev').addEventListener('click', navigatePrevMatch);
     document.getElementById('searchNext').addEventListener('click', navigateNextMatch);
     document.getElementById('clearSearch').addEventListener('click', clearSearch);
@@ -2613,7 +2652,15 @@ function setupEventListeners() {
     // Keyboard shortcuts
     document.addEventListener('keydown', e => {
         if ((e.ctrlKey || e.metaKey) && e.key === 'f') { e.preventDefault(); document.getElementById('searchInput').focus(); }
-        if (e.key === 'F3' || (e.key === 'Enter' && document.activeElement.id === 'searchInput')) { e.preventDefault(); e.shiftKey ? navigatePrevMatch() : navigateNextMatch(); }
+        if (e.key === 'F3' || (e.key === 'Enter' && document.activeElement.id === 'searchInput')) { 
+            e.preventDefault(); 
+            if (AppState.hasLargeTable) {
+                clearTimeout(delayedSearchTimeout);
+                performSearch(document.getElementById('searchInput').value);
+            } else {
+                e.shiftKey ? navigatePrevMatch() : navigateNextMatch(); 
+            }
+        }
         if (e.key === 'Escape') {
             if (document.getElementById('lightboxOverlay').classList.contains('visible')) { closeLightbox(); }
             else if (document.getElementById('mediaPasswordOverlay').classList.contains('visible')) { hideMediaPasswordPrompt(); }
