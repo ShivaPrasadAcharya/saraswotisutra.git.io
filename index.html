@@ -477,88 +477,6 @@
             .search-btn { -webkit-user-select: none; user-select: none; }
             .copy-table-btn { -webkit-user-select: none; user-select: none; }
         }
-        /* Virtual Scrolling Table Styles */
-        .virtual-table-container {
-            width: 100%;
-            margin: 16px 0;
-        }
-        .virtual-table-wrapper {
-            position: relative;
-            max-height: 600px;
-            overflow-y: auto;
-            overflow-x: auto;
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-md);
-            background: var(--bg-primary);
-            -webkit-overflow-scrolling: touch;
-        }
-        .virtual-scroller {
-            display: flex;
-            flex-direction: column;
-        }
-        .virtual-table-header {
-            display: flex;
-            background: var(--bg-tertiary);
-            font-weight: 600;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            border-bottom: 1px solid var(--border-color);
-        }
-        .virtual-table-header-cell {
-            flex: 1;
-            padding: 10px 12px;
-            border-right: 1px solid var(--border-color);
-            text-overflow: ellipsis;
-            overflow: hidden;
-            white-space: nowrap;
-            min-width: 100px;
-            color: var(--text-primary);
-        }
-        .virtual-table-header-cell:last-child {
-            border-right: none;
-        }
-        .virtual-table-row {
-            display: flex;
-            border-bottom: 1px solid var(--border-color);
-            transition: background-color 0.1s ease;
-        }
-        .virtual-table-row:hover {
-            background: var(--bg-secondary);
-        }
-        .virtual-table-cell {
-            flex: 1;
-            padding: 10px 12px;
-            border-right: 1px solid var(--border-color);
-            text-overflow: ellipsis;
-            overflow: hidden;
-            white-space: nowrap;
-            min-width: 100px;
-            color: var(--text-primary);
-            cursor: pointer;
-        }
-        .virtual-table-cell:last-child {
-            border-right: none;
-        }
-        .virtual-table-cell:hover {
-            overflow: visible;
-            white-space: normal;
-            word-wrap: break-word;
-            background: var(--bg-secondary);
-            z-index: 5;
-            max-width: 400px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-        }
-        .virtual-table-cell.table-cell-truncated {
-            max-width: 200px;
-        }
-        .virtual-spacer {
-            pointer-events: none;
-        }
-        .virtual-visible-rows {
-            display: flex;
-            flex-direction: column;
-        }
         .mobile-menu-btn { display: none; background: transparent; border: none; color: var(--text-primary); font-size: 24px; cursor: pointer; padding: 4px; }
         /* Protection styles: disable selection, image/link interaction and printing for protected content */
         .nav-item-protect { margin-left: 6px; font-size: 12px; color: var(--accent-purple); }
@@ -717,7 +635,7 @@ const AppState = {
     unitMeta: new Map(), combinedMeta: new Map(), currentNote: null,
     unlockedNotes: new Set(), searchMatches: [], currentMatchIndex: -1, currentProtected: false,
     originalContent: '', hasReadme: false, combinedViewHeadingMap: {},
-    headingIdMap: {}, headingCounter: 0, truncateTableCells: true, allTableCells: [], hasLargeTable: false
+    headingIdMap: {}, headingCounter: 0, truncateTableCells: true, allTableCells: []
 };
 
 // ========================================
@@ -1513,189 +1431,13 @@ function convertToMediaGallery(table) {
     return gallery;
 }
 
-// ========================================
-// Virtual Scrolling Manager
-// ========================================
-const VirtualScrolling = {
-    tables: new Map(),
-    
-    createVirtualTable(table, headers, rows) {
-        const container = document.createElement('div');
-        container.className = 'virtual-table-container';
-        
-        // Create wrapper
-        const wrapper = document.createElement('div');
-        wrapper.className = 'virtual-table-wrapper';
-        wrapper.style.maxHeight = '600px';
-        wrapper.style.overflow = 'auto';
-        wrapper.style.border = '1px solid var(--border-color)';
-        wrapper.style.borderRadius = 'var(--radius-md)';
-        
-        // Create virtual scroller
-        const scroller = document.createElement('div');
-        scroller.className = 'virtual-scroller';
-        
-        // Estimate row height (in px)
-        const rowHeight = 40;
-        const visibleRows = Math.ceil(600 / rowHeight) + 2; // +2 for buffer
-        
-        // Create header (fixed)
-        const headerRow = document.createElement('div');
-        headerRow.className = 'virtual-table-header';
-        headerRow.style.display = 'flex';
-        headerRow.style.backgroundColor = 'var(--bg-tertiary)';
-        headerRow.style.fontWeight = '600';
-        headerRow.style.position = 'sticky';
-        headerRow.style.top = '0';
-        headerRow.style.zIndex = '10';
-        headerRow.style.borderBottom = '1px solid var(--border-color)';
-        
-        headers.forEach(header => {
-            const cell = document.createElement('div');
-            cell.className = 'virtual-table-header-cell';
-            cell.style.flex = '1';
-            cell.style.padding = '10px 12px';
-            cell.style.borderRight = '1px solid var(--border-color)';
-            cell.style.textOverflow = 'ellipsis';
-            cell.style.overflow = 'hidden';
-            cell.style.minWidth = '100px';
-            cell.textContent = header;
-            headerRow.appendChild(cell);
-        });
-        
-        // Create spacer for virtual scrolling
-        const spacer = document.createElement('div');
-        spacer.className = 'virtual-spacer';
-        
-        // Create visible rows container
-        const visibleContainer = document.createElement('div');
-        visibleContainer.className = 'virtual-visible-rows';
-        
-        scroller.appendChild(headerRow);
-        scroller.appendChild(spacer);
-        scroller.appendChild(visibleContainer);
-        
-        wrapper.appendChild(scroller);
-        container.appendChild(wrapper);
-        
-        // Virtual scrolling logic
-        let startIndex = 0;
-        let scrollHandler = null;
-        
-        const renderRows = () => {
-            visibleContainer.innerHTML = '';
-            const endIndex = Math.min(startIndex + visibleRows, rows.length);
-            
-            // Add top spacer
-            if (startIndex > 0) {
-                const topSpacer = document.createElement('div');
-                topSpacer.style.height = (startIndex * rowHeight) + 'px';
-                visibleContainer.appendChild(topSpacer);
-            }
-            
-            // Render visible rows
-            for (let i = startIndex; i < endIndex; i++) {
-                const row = rows[i];
-                const rowEl = document.createElement('div');
-                rowEl.className = 'virtual-table-row';
-                rowEl.style.display = 'flex';
-                rowEl.style.borderBottom = '1px solid var(--border-color)';
-                rowEl.dataset.rowIndex = i;
-                
-                row.forEach((cell, cellIdx) => {
-                    const cellEl = document.createElement('div');
-                    cellEl.className = 'virtual-table-cell';
-                    cellEl.style.flex = '1';
-                    cellEl.style.padding = '10px 12px';
-                    cellEl.style.borderRight = '1px solid var(--border-color)';
-                    cellEl.style.textOverflow = 'ellipsis';
-                    cellEl.style.overflow = 'hidden';
-                    cellEl.style.whiteSpace = 'nowrap';
-                    cellEl.style.minWidth = '100px';
-                    cellEl.title = cell.textContent;
-                    cellEl.textContent = cell.textContent || '';
-                    TruncationManager.applyToCell(cellEl);
-                    rowEl.appendChild(cellEl);
-                });
-                
-                visibleContainer.appendChild(rowEl);
-            }
-            
-            // Add bottom spacer
-            if (endIndex < rows.length) {
-                const bottomSpacer = document.createElement('div');
-                bottomSpacer.style.height = ((rows.length - endIndex) * rowHeight) + 'px';
-                visibleContainer.appendChild(bottomSpacer);
-            }
-        };
-        
-        // Handle scroll events with throttling
-        let lastScroll = 0;
-        scrollHandler = () => {
-            const now = Date.now();
-            if (now - lastScroll < 50) return; // Throttle to 50ms
-            lastScroll = now;
-            
-            const scrollTop = wrapper.scrollTop;
-            const newStartIndex = Math.floor(scrollTop / rowHeight);
-            if (newStartIndex !== startIndex) {
-                startIndex = newStartIndex;
-                renderRows();
-            }
-        };
-        
-        wrapper.addEventListener('scroll', scrollHandler, { passive: true });
-        
-        // Initial render
-        renderRows();
-        
-        // Update total height for scrollbar
-        spacer.style.height = (rows.length * rowHeight) + 'px';
-        
-        return { container, wrapper, render: renderRows };
-    },
-    
-    addStyles() {
-        if (document.getElementById('virtual-scrolling-styles')) return;
-        const style = document.createElement('style');
-        style.id = 'virtual-scrolling-styles';
-        style.textContent = `
-            .virtual-table-container { width: 100%; }
-            .virtual-table-wrapper { position: relative; }
-            .virtual-scroller { display: flex; flex-direction: column; }
-            .virtual-table-header { display: flex; }
-            .virtual-table-row { display: flex; }
-            .virtual-table-header-cell, .virtual-table-cell { word-wrap: break-word; }
-        `;
-        document.head.appendChild(style);
-    }
-};
-
-VirtualScrolling.addStyles();
-
 function setupTableFilters() {
     const body = document.getElementById('markdownBody'); if (!body) return;
     body.querySelectorAll('table').forEach((table, idx) => {
         const headers = Array.from(table.querySelectorAll('th')).map(th => th.textContent.trim());
         if (headers.length === 0) return;
         
-        // Extract table data for virtual scrolling (if large)
-        const tableRows = Array.from(table.querySelectorAll('tbody tr, tr:not(:first-child)')).map(row => 
-            Array.from(row.querySelectorAll('td, th')).map(cell => ({ textContent: cell.textContent.trim(), element: cell }))
-        );
-        
-        // Use virtual scrolling for tables with >20 rows
-        if (tableRows.length > 20) {
-            const virtualTable = VirtualScrolling.createVirtualTable(table, headers, tableRows.map(row => row.map(cell => cell.textContent)));
-            table.parentNode.insertBefore(virtualTable.container, table);
-            table.style.display = 'none';
-            
-            // Store reference for later operations
-            VirtualScrolling.tables.set(`table-${idx}`, { virtual: true, container: virtualTable.container, originalTable: table, headers, rows: tableRows });
-            return;
-        }
-        
-        // Apply truncation to all table cells (for non-virtualized tables)
+        // Apply truncation to all table cells
         table.querySelectorAll('td').forEach(cell => {
             TruncationManager.applyToCell(cell);
             // Add click handler to toggle full text on click
@@ -1786,22 +1528,6 @@ function setupTableFilters() {
             if (!wrapper.contains(e.target)) dropdown.classList.remove('open');
         });
     });
-    
-    // Check for large tables (>100 rows)
-    AppState.hasLargeTable = Array.from(body.querySelectorAll('table')).some(table => {
-        const dataRows = Array.from(table.querySelectorAll('tbody tr, tr:not(:first-child)'));
-        return dataRows.length > 100;
-    });
-    
-    // Update search icon based on large table presence
-    const searchIcon = document.querySelector('.search-icon');
-    if (AppState.hasLargeTable) {
-        searchIcon.style.pointerEvents = 'auto';
-        searchIcon.style.cursor = 'pointer';
-    } else {
-        searchIcon.style.pointerEvents = 'none';
-        searchIcon.style.cursor = 'default';
-    }
 }
 
 function processTableLinks(table) {
@@ -2381,49 +2107,28 @@ function validatePassword() {
 }
 
 // ========================================
-// Search with Optimized Highlighting
+// Search
 // ========================================
-let searchAnimationFrame = null;
-
 function performSearch(query) {
     const body = document.getElementById('markdownBody');
     if (!body || !query.trim()) { clearSearch(); return; }
-    
-    // Cancel previous animation frame if any
-    if (searchAnimationFrame) cancelAnimationFrame(searchAnimationFrame);
-    
-    // Restore original content first
     body.innerHTML = AppState.originalContent;
     addHeadingIds();
     processSmartLinks();
     processMediaGalleries();
     AppState.searchMatches = [];
     AppState.currentMatchIndex = -1;
-    
-    // Use requestAnimationFrame to avoid blocking UI during search
-    searchAnimationFrame = requestAnimationFrame(() => {
-        try {
-            const isNepali = NepaliNormalizer.isDevanagari(query);
-            if (isNepali) highlightDevanagari(body, query);
-            else highlightMatches(body, query.toLowerCase());
-            updateSearchUI();
-            if (AppState.searchMatches.length > 0) navigateToMatch(0);
-        } catch (e) {
-            console.error('Search error:', e);
-        }
-        searchAnimationFrame = null;
-    });
+    const isNepali = NepaliNormalizer.isDevanagari(query);
+    if (isNepali) highlightDevanagari(body, query);
+    else highlightMatches(body, query.toLowerCase());
+    updateSearchUI();
+    if (AppState.searchMatches.length > 0) navigateToMatch(0);
 }
 
 function highlightDevanagari(el, query) {
     const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
-    const nodes = []; 
-    while (walker.nextNode()) nodes.push(walker.currentNode);
-    
+    const nodes = []; while (walker.nextNode()) nodes.push(walker.currentNode);
     const normQuery = NepaliNormalizer.normalize(query.toLowerCase());
-    const nodesToReplace = [];
-    
-    // First pass: collect all matches
     for (const node of nodes) {
         const text = node.textContent, normText = NepaliNormalizer.normalize(text.toLowerCase());
         const matches = [];
@@ -2437,70 +2142,42 @@ function highlightDevanagari(el, query) {
             start = found + 1;
         }
         if (matches.length > 0) {
-            nodesToReplace.push({ node, text, matches });
+            const frag = document.createDocumentFragment();
+            let last = 0;
+            for (const m of matches) {
+                if (m.start > last) frag.appendChild(document.createTextNode(text.substring(last, m.start)));
+                const mark = document.createElement('mark'); mark.className = 'search-highlight';
+                mark.textContent = text.substring(m.start, m.end);
+                mark.dataset.matchIndex = AppState.searchMatches.length;
+                AppState.searchMatches.push(mark);
+                frag.appendChild(mark);
+                last = m.end;
+            }
+            if (last < text.length) frag.appendChild(document.createTextNode(text.substring(last)));
+            node.parentNode.replaceChild(frag, node);
         }
-    }
-    
-    // Second pass: replace nodes in batch (more efficient)
-    for (const item of nodesToReplace) {
-        const frag = document.createDocumentFragment();
-        let last = 0;
-        for (const m of item.matches) {
-            if (m.start > last) frag.appendChild(document.createTextNode(item.text.substring(last, m.start)));
-            const mark = document.createElement('mark'); 
-            mark.className = 'search-highlight';
-            mark.textContent = item.text.substring(m.start, m.end);
-            mark.dataset.matchIndex = AppState.searchMatches.length;
-            AppState.searchMatches.push(mark);
-            frag.appendChild(mark);
-            last = m.end;
-        }
-        if (last < item.text.length) frag.appendChild(document.createTextNode(item.text.substring(last)));
-        item.node.parentNode.replaceChild(frag, item.node);
     }
 }
 
 function highlightMatches(el, query) {
     const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
-    const nodes = []; 
-    while (walker.nextNode()) nodes.push(walker.currentNode);
-    
-    const regex = new RegExp(query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
-    const nodesToReplace = [];
-    
-    // First pass: collect nodes with matches
+    const nodes = []; while (walker.nextNode()) nodes.push(walker.currentNode);
     for (const node of nodes) {
         const text = node.textContent;
         if (text.toLowerCase().includes(query)) {
-            regex.lastIndex = 0; // Reset regex
-            const matches = [];
-            let match;
+            const frag = document.createDocumentFragment();
+            const regex = new RegExp(query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+            let last = 0, match;
             while ((match = regex.exec(text)) !== null) {
-                matches.push({ index: match.index, length: match[0].length, text: match[0] });
+                if (match.index > last) frag.appendChild(document.createTextNode(text.substring(last, match.index)));
+                const mark = document.createElement('mark'); mark.className = 'search-highlight';
+                mark.textContent = match[0]; mark.dataset.matchIndex = AppState.searchMatches.length;
+                AppState.searchMatches.push(mark); frag.appendChild(mark);
+                last = regex.lastIndex;
             }
-            if (matches.length > 0) {
-                nodesToReplace.push({ node, text, matches });
-            }
+            if (last < text.length) frag.appendChild(document.createTextNode(text.substring(last)));
+            node.parentNode.replaceChild(frag, node);
         }
-    }
-    
-    // Second pass: replace nodes in batch
-    for (const item of nodesToReplace) {
-        const frag = document.createDocumentFragment();
-        let last = 0;
-        
-        for (const m of item.matches) {
-            if (m.index > last) frag.appendChild(document.createTextNode(item.text.substring(last, m.index)));
-            const mark = document.createElement('mark'); 
-            mark.className = 'search-highlight';
-            mark.textContent = m.text;
-            mark.dataset.matchIndex = AppState.searchMatches.length;
-            AppState.searchMatches.push(mark);
-            frag.appendChild(mark);
-            last = m.index + m.length;
-        }
-        if (last < item.text.length) frag.appendChild(document.createTextNode(item.text.substring(last)));
-        item.node.parentNode.replaceChild(frag, item.node);
     }
 }
 
@@ -2606,45 +2283,9 @@ function setupEventListeners() {
     document.getElementById('lightboxNext').addEventListener('click', () => navigateLightbox(1));
     document.getElementById('lightboxOverlay').addEventListener('click', e => { if (e.target === e.currentTarget) closeLightbox(); });
     
-    // Search with optimized debouncing
+    // Search
     let searchTimeout;
-    let lastSearchQuery = '';
-    let delayedSearchTimeout;
-    document.getElementById('searchInput').addEventListener('input', e => { 
-        if (AppState.hasLargeTable) {
-            clearTimeout(delayedSearchTimeout);
-            delayedSearchTimeout = setTimeout(() => {
-                const query = e.target.value;
-                performSearch(query);
-            }, 4000); // Search after 4 seconds of inactivity (approx. 4 cursor blinks)
-            return;
-        }
-        clearTimeout(searchTimeout);
-        const query = e.target.value;
-        
-        // Skip if query hasn't significantly changed
-        if (query === lastSearchQuery) return;
-        lastSearchQuery = query;
-        
-        // Use longer debounce (300ms) for better performance
-        searchTimeout = setTimeout(() => {
-            performSearch(query);
-        }, 300);
-    }, { passive: true });
-    
-    // For large tables, search on Enter or click icon
-    const searchIcon = document.querySelector('.search-icon');
-    searchIcon.addEventListener('click', () => {
-        if (!AppState.hasLargeTable) return;
-        clearTimeout(delayedSearchTimeout);
-        const query = document.getElementById('searchInput').value;
-        performSearch(query);
-    });
-    // Make icon clickable only for large tables
-    if (AppState.hasLargeTable) {
-        searchIcon.style.pointerEvents = 'auto';
-        searchIcon.style.cursor = 'pointer';
-    }
+    document.getElementById('searchInput').addEventListener('input', e => { clearTimeout(searchTimeout); searchTimeout = setTimeout(() => performSearch(e.target.value), 300); });
     document.getElementById('searchPrev').addEventListener('click', navigatePrevMatch);
     document.getElementById('searchNext').addEventListener('click', navigateNextMatch);
     document.getElementById('clearSearch').addEventListener('click', clearSearch);
@@ -2652,15 +2293,7 @@ function setupEventListeners() {
     // Keyboard shortcuts
     document.addEventListener('keydown', e => {
         if ((e.ctrlKey || e.metaKey) && e.key === 'f') { e.preventDefault(); document.getElementById('searchInput').focus(); }
-        if (e.key === 'F3' || (e.key === 'Enter' && document.activeElement.id === 'searchInput')) { 
-            e.preventDefault(); 
-            if (AppState.hasLargeTable) {
-                clearTimeout(delayedSearchTimeout);
-                performSearch(document.getElementById('searchInput').value);
-            } else {
-                e.shiftKey ? navigatePrevMatch() : navigateNextMatch(); 
-            }
-        }
+        if (e.key === 'F3' || (e.key === 'Enter' && document.activeElement.id === 'searchInput')) { e.preventDefault(); e.shiftKey ? navigatePrevMatch() : navigateNextMatch(); }
         if (e.key === 'Escape') {
             if (document.getElementById('lightboxOverlay').classList.contains('visible')) { closeLightbox(); }
             else if (document.getElementById('mediaPasswordOverlay').classList.contains('visible')) { hideMediaPasswordPrompt(); }
