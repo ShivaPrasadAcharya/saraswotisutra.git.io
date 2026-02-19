@@ -1,7 +1,5 @@
 window.noteU21Content = `
-{
-  "title": "U21-Shiva Fundamentals",
-  "sections": [
+ [
     {
       "heading": "Components",
       "content": [
