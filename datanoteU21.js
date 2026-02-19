@@ -1,2 +1,56 @@
-window.noteU21Content = `# Shiva Fundamentals\n\n## Components\nBuilding blocks of React.\n\n## Comparison\n\n| Feature | Class | Functional |\n|---------|-------|------------|\n| State | this.state | useState |\n| Lifecycle | methods | useEffect |\n\n## Resources\n\n| Resource | Link | Type |\n|----------|------|------|\n| Official Docs | https://react.dev | External |\n| Tutorial | https://react.dev/learn | External |\n| Community | https://github.com/facebook/react | Repository |\n| Ganesh Icon | IMAGES/ganesh.jpg | Image |`;
+window.noteU21Content = `
+{
+  "title": "Shiva Fundamentals",
+  "sections": [
+    {
+      "heading": "Components",
+      "content": [
+        {
+          "text": "Building blocks of React."
+        }
+      ]
+    },
+    {
+      "heading": "Comparison",
+      "content": [
+        {
+          "Feature": "State",
+          "Class": "this.state",
+          "Functional": "useState"
+        },
+        {
+          "Feature": "Lifecycle",
+          "Class": "methods",
+          "Functional": "useEffect"
+        }
+      ]
+    },
+    {
+      "heading": "Resources",
+      "content": [
+        {
+          "Resource": "Official Docs",
+          "Link": "https://react.dev",
+          "Type": "External"
+        },
+        {
+          "Resource": "Tutorial",
+          "Link": "https://react.dev/learn",
+          "Type": "External"
+        },
+        {
+          "Resource": "Community",
+          "Link": "https://github.com/facebook/react",
+          "Type": "Repository"
+        },
+        {
+          "Resource": "Ganesh Icon",
+          "Link": "IMAGES/ganesh.jpg",
+          "Type": "Image"
+        }
+      ]
+    }
+  ]
+}
+`;
 window.noteU21Meta = { name: "React Basics", emoji: "⚛️", password: null, protection: "NO" };
