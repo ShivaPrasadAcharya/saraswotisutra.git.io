@@ -1,4 +1,4 @@
-window.noteU21Content = `
+window.noteU21Content = `# U21-Linking image \n
 [
         {
           "Resource": "Official Docs",
@@ -21,6 +21,5 @@ window.noteU21Content = `
           "Type": "Image"
         }
       ]
-
 `;
 window.noteU21Meta = { name: "U21-React Basics", emoji: "⚛️", password: null, protection: "NO" };
