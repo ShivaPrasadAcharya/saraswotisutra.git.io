@@ -1,4 +1,4 @@
-window.noteU14Content = `# अधिवक्ताहरू (Advocates)\n
+window.noteU14Content = `# U14-अधिवक्ताहरू (Advocates)\n
 [
   {
     "Licence No": "1",
@@ -55197,4 +55197,4 @@ window.noteU14Content = `# अधिवक्ताहरू (Advocates)\n
 
 
 `;
-window.noteU14Meta = { name: "Security ok", emoji: "🔒", password: null, protection:"NO"};
+window.noteU14Meta = { name: "Advocate-U14", emoji: "🔒", password: null, protection:"NO"};
