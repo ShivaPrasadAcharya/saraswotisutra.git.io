@@ -1,4 +1,4 @@
-window.noteU15Content = `# ZERO Fundamentals\n\n## ComponentsJson
+window.noteU15Content = `# U15-Advocates (7101-7226)\n\n## ComponentsJson
 [
   {
     "Licence No": "1",
@@ -1810,4 +1810,4 @@ window.noteU15Content = `# ZERO Fundamentals\n\n## ComponentsJson
     "Issuedate": "57/04/26"
   }
 ]`;
-window.noteU21Meta = { name: "Json Table Basics", emoji: "⚛️", password: null, protection: "NO" };
+window.noteU21Meta = { name: "U15-Advocates-Trial", emoji: "⚛️", password: null, protection: "NO" };
