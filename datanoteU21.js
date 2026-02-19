@@ -1,31 +1,5 @@
 window.noteU21Content = `
- [
-    {
-      "heading": "Components",
-      "content": [
-        {
-          "text": "Building blocks of React."
-        }
-      ]
-    },
-    {
-      "heading": "Comparison",
-      "content": [
-        {
-          "Feature": "State",
-          "Class": "this.state",
-          "Functional": "useState"
-        },
-        {
-          "Feature": "Lifecycle",
-          "Class": "methods",
-          "Functional": "useEffect"
-        }
-      ]
-    },
-    {
-      "heading": "Resources",
-      "content": [
+[
         {
           "Resource": "Official Docs",
           "Link": "https://react.dev",
@@ -47,8 +21,6 @@ window.noteU21Content = `
           "Type": "Image"
         }
       ]
-    }
-  ]
-}
+
 `;
 window.noteU21Meta = { name: "U21-React Basics", emoji: "⚛️", password: null, protection: "NO" };
