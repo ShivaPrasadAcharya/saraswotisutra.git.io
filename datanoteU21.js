@@ -1,6 +1,6 @@
 window.noteU21Content = `
 {
-  "title": "Shiva Fundamentals",
+  "title": "U21-Shiva Fundamentals",
   "sections": [
     {
       "heading": "Components",
@@ -53,4 +53,4 @@ window.noteU21Content = `
   ]
 }
 `;
-window.noteU21Meta = { name: "React Basics", emoji: "⚛️", password: null, protection: "NO" };
+window.noteU21Meta = { name: "U21-React Basics", emoji: "⚛️", password: null, protection: "NO" };
